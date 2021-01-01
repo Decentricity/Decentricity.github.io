@@ -2,7 +2,7 @@
 - selector: example_slider
   captions: false
   images:
-    - src: /img/2.jpg
+    - src: /img/6.jpg
       alt: image two
 
   settings:
