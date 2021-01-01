@@ -14,9 +14,9 @@ markdown: kramdown
 
 
 ### content configuration ###
-title:       "Decentricity"
+title:       "Decentricity - by Pandu Sastrowardoyo"
 keywords:    "decentralized, technologies, tech, blockchain, dlt, self-hosted"
-description: "Awesome Decentralized & Self-Hosted Technologies and the Future of Humanity"
+description: "Awesome Decentralized & Self-Hosted Technologies and the Future of Humanity, by Pandu Sastrowardoyo"
 source_link: "https://github.com/Decentricity"
 favicon:     "img/favicon.ico"
 touch_icon:  "img/apple-touch-icon.png"
