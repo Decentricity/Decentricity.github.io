@@ -8,6 +8,14 @@
       alt: image two
     - src: /img/3.jpg
       alt: image three
+    - src: /img/4.jpg
+      alt: image one
+    - src: /img/5.jpg
+      alt: image two
+    - src: /img/6.jpg
+      alt: image three
+    - src: /img/7.jpg
+      alt: image three
   settings:
     height: "'auto'"
     effect: "'fade'"

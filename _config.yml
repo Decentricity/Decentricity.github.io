@@ -36,3 +36,5 @@ colors:
 kramdown:
   auto_ids:  false
 
+image_sliders:
+  - example_slider
