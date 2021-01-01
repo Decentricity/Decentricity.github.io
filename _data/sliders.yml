@@ -2,9 +2,13 @@
 - selector: example_slider
   captions: false
   images:
-    - src: /img/6.jpg
+    - src: /img/1.jpg
+      alt: image one
+    - src: /img/2.jpg
       alt: image two
+    - src: /img/3.jpg
+      alt: image three
 
   settings:
-    height: "'auto'"
+    height: "'300px'"
     effect: "'fade'"
