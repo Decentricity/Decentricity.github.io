@@ -1,92 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="description" content="Simple Chat Room">
-	<meta name="author" content="Tomomi Imura  @girlie_mac">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="mobile-web-app-capable" content="yes">
-	<title>Kitteh Anonymous Chat</title>
-
-	<link rel="icon" sizes="192x192" href="images/app-icon-192.png">
-	<link rel="icon" sizes="128x128" href="images/app-icon-128.png">
-	<link rel="apple-touch-icon" sizes="128x128" href="images/app-icon-128.png">
-	<link rel="apple-touch-icon-precomposed" sizes="128x128" href="images/app-icon-128.png">
-
-	<!-- Polymer -->
-	<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-
-	<link rel="import" href="bower_components/pubnub-polymer/pubnub-element.html">
-	<link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
-	<link rel="import" href="bower_components/core-item/core-item.html">
-	<link rel="import" href="bower_components/paper-input/paper-input.html">
-	<link rel="import" href="bower_components/paper-fab/paper-fab.html">
-	<link rel="import" href="x-chat-list.html">
-	<link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Peer to Peer Chat</title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <!-- Custom Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <!-- Theme CSS -->
+    <link href="css/agency.css" rel="stylesheet">
 </head>
 
-<body unresolved fullbleed>
-<!-- Google Tag Manager -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PZWSZ2"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PZWSZ2');</script>
-<!-- End Google Tag Manager -->
+<body>
+    <nav class="navbar navbar-toggleable-sm navbar-inverse fixed-top bg-inverse">
+        <a class="navbar-brand" href="/">P2P chat App</a>
+    </nav>
 
-<template is="auto-binding">
+    <div id="chat-app" class="mt-5 pt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4 mb-4">
 
-<!-- Use your own publish_key and subscribe_key please -->
-<core-pubnub publish_key="pub-c-5b7dd4d4-59e9-49f5-a63e-8b8e5ef6a57b" subscribe_key="sub-c-d3031a14-7436-11e5-8f6d-0619f8945a4f" uuid="{{uuid}}">
-	<core-pubnub-subscribe channel="polymer-chat" id="sub" on-callback="{{subscribeCallback}}" on-presence="{{presenceChanged}}" on-error="{{error}}">
-	    <core-pubnub-publish channel="polymer-chat" message="" id="pub" on-error="{{error}}"></core-pubnub-publish>
-		<core-pubnub-history channel="polymer-chat" count="30" on-success="{{historyRetrieved}}" on-error="{{error}}"></core-pubnub-history>
-    </core-pubnub-subscribe>
-</core-pubnub>
+                    <div class="row">
+                        <div class="col-sm-12 mb-4">
+                            Your ID:
+                            <h4 id="peer-id" data-toggle="tooltip" data-placement="top" title="Click to copy peer ID">
+                            </h4>
+                            <a href="#getUserNameModal" data-toggle="modal">change</a>
+                        </div>
+                        <div class="col-sm-12 mb-4">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Online Users</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="onlinepeers"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 mb-4 card">
+                    <div class="card-body chat-container">
 
-<core-scaffold>
-	<core-header-panel navigation flex>
-	    <core-toolbar id="navheader" class="tall">
-    		<div class="middle avatar {{color}}" style="background-image: url({{avatar}})"></div>
-	      	<div class="bottom uuid">{{uuid}}</div>
-	    </core-toolbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	    <section layout vertical id="onlineList">
-	    	<core-item label="Online Now" class="subdue" layout horizontal center></core-item>
+    <div class="modal" id="getUserNameModal" tabindex="-1" role="dialog" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop='static'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter your Name</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="user-name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary username-done">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	   		<template repeat="{{cat in cats}}">
-	   			<core-item label="{{cat}}"></core-item>
-	   		</template>
-	    </section>
-  	</core-header-panel>
 
-  	<div tool layout horizontal flex>
-  		<div flex>Kitteh Anonymous</div>
-  		<core-icon icon="account-circle"></core-icon><span>{{occupancy}}</span>
-  	</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 
-  	<section layout vertical fit id="chat">
-		<div flex class="chat-list">
-			<template repeat="{{message in messageList}}">
-				<x-chat-list color="{{message.color}}" avatar="{{message.avatar}}" username="{{message.uuid}}" text="{{message.text}}"  status="{{message.status}}" timestamp="{{message.timestamp}}"></x-chat-list>
-			</template>
-		</div>
-		<div class="shim"></div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 
-		<div class="send-message" layout horizontal>
-	    	<paper-input flex label="Type message..." id="input" value="{{input}}" on-keyup="{{checkKey}}"></paper-input>
-	    	<paper-fab icon="send" id="sendButton" on-tap="{{sendMyMessage}}"></paper-fab>
-	    </div>
-  	</section>
-</core-scaffold>
-
-</template>
-
-<script src="js/app.min.js"></script>
-
+    <script src="js/peer.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/peer-client.js"></script>
 </body>
+
 </html>
