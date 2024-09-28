@@ -3,7 +3,7 @@ import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 /*************** WebLLM logic ***************/
 const messages = [
   {
-    content: "you are the user's best friend. you're sharp, witty, and sometimes sardonic. your responses are short and succinct (just 1 sentence long).",
+    content: "you are the user's best friend. you're sharp, witty, and caring. your responses are short and succinct (just 1 sentence long).",
     role: "system",
   },
 ];
