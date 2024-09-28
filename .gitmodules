@@ -1,0 +1,4 @@
+[submodule "simple-chat-js"]
+	path = simple-chat-js
+	url = https://github.com/mlc-ai/web-llm.git
+	branch = main
