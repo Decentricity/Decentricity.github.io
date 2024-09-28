@@ -1,28 +1,28 @@
 <!doctype html>
 <html>
   <head>
-    <title>simple chatbot</title>
+    <title>Simple Chatbot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <link rel="stylesheet" href="./index.css" />
   </head>
 
   <body>
-    <p>hi. i'm the trustii liberated ai. i need to download my local llm before i can run offline. see status below:</p>
+    <p>Step 1: Initialize WebLLM and Download Model</p>
     <div class="download-container">
-      <!-- hide the model selection dropdown -->
+      <!-- add 'hidden' class to hide model selection -->
       <select id="model-selection" class="hidden"></select>
+      <button id="download">Download</button>
     </div>
-    <!-- keep download status visible -->
-    <p id="download-status"></p>
+    <p id="download-status" class="hidden"></p>
 
-    <p>please wait and do not panic. this will take a while on most phones. if you don't see anything in the box above after a minute, your device might not have what it takes, though.</p>
+    <p>Step 2: Chat</p>
     <div class="chat-container">
       <div id="chat-box" class="chat-box"></div>
       <div id="chat-stats" class="chat-stats hidden"></div>
       <div class="chat-input-container">
-        <input type="text" id="user-input" placeholder="type a message..." />
-        <button id="send" disabled>send</button>
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button id="send" disabled>Send</button>
       </div>
     </div>
 
