@@ -16,6 +16,7 @@ let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k";
 // callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
   console.log("initialize", report.progress);
+  console.log("progress report:", report.text); // debug line to confirm status
   document.getElementById("download-status").textContent = report.text;
 }
 
@@ -142,6 +143,7 @@ availableModels.forEach((modelId) => {
 document.getElementById("model-selection").value = selectedModel;
 
 // automatically download the model when the page loads
+selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k"; // explicitly set default model
 initializeWebLLMEngine().then(() => {
   document.getElementById("send").disabled = false;
 });
