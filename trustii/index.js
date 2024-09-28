@@ -11,7 +11,7 @@ const messages = [
 const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
-let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k"; // default model
+let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
@@ -25,11 +25,11 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
 async function initializeWebLLMEngine() {
   document.getElementById("download-status").classList.remove("hidden");
+  selectedModel = document.getElementById("model-selection").value;
   const config = {
     temperature: 1.0,
     top_p: 1,
   };
-  // ensure selectedModel is set correctly
   await engine.reload(selectedModel, config);
 }
 
@@ -148,4 +148,3 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
-
