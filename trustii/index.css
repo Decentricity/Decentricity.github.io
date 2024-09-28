@@ -1,33 +1,78 @@
 body,
 html {
   font-family: Arial, sans-serif;
-  padding: 10px 20px;
+  padding: 0; /* remove padding */
+  margin: 0; /* remove margin */
+  height: 100vh; /* fill viewport height */
   background-color: #000;
   color: #c7a4ff; /* light purple text */
-  height: 100vh; /* fill the full viewport height */
-  margin: 0; /* remove default margin */
-  overflow: hidden; /* prevent body scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+.download-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
 }
 
 .chat-container {
-  flex: 1 1 auto; /* allow flexible growth */
+  flex: 1; /* allow it to expand */
   display: flex;
   flex-direction: column;
   border: 2px solid #c7a4ff;
-  height: calc(100vh - 80px); /* fill remaining height minus any padding/margins */
-  width: calc(100% - 40px); /* account for body padding */
+  margin: 10px; /* add some spacing around */
 }
 
 .chat-box {
-  overflow-y: scroll;
+  flex: 1; /* allow chat-box to grow */
+  overflow-y: auto; /* scroll only on overflow */
   background-color: #333; /* dark grey background */
   border: 1px solid #555; /* dark border */
   padding: 5px;
-  flex-grow: 1; /* allow chat-box to grow */
+  color: #c7a4ff; /* light purple text */
+}
+
+.chat-stats {
+  background-color: #444; /* dark grey background */
+  padding: 10px;
+  font-size: 0.75rem;
   color: #c7a4ff; /* light purple text */
 }
 
 .chat-input-container {
-  flex-shrink: 0; /* prevent shrinking */
   display: flex;
+  padding: 10px;
+  border-top: 1px solid #555; /* separator between chat and input */
+}
+
+#user-input {
+  flex: 1; /* allow input to expand */
+  padding: 10px;
+  border: 1px solid #555;
+  background-color: #222; /* dark input background */
+  color: #c7a4ff; /* light purple text */
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #7b5eff; /* light purple button */
+  color: #000; /* black text */
+  cursor: pointer;
+  flex-shrink: 0; /* prevent button from shrinking */
+}
+
+button:disabled {
+  background-color: #555; /* dark grey */
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #6e4fd8; /* darker purple */
+}
+
+.hidden {
+  display: none;
 }
