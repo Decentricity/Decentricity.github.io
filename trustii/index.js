@@ -1,5 +1,11 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
+/*************** Force scroll on page load ***************/
+window.addEventListener('load', function() {
+  // Timeout allows page rendering to complete before scrolling
+  setTimeout(function() { window.scrollTo(0, 1); }, 100);
+});
+
 /*************** WebLLM logic ***************/
 const messages = [
   {
@@ -148,4 +154,3 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
-
