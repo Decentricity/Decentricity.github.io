@@ -133,6 +133,8 @@ function updateLastMessage(content) {
 }
 
 /*************** UI binding ***************/
+console.log('availableModels:', availableModels); // debug log to see model ids
+
 availableModels.forEach((modelId) => {
   const option = document.createElement("option");
   option.value = modelId;
