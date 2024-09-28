@@ -8,14 +8,15 @@
   </head>
 
   <body>
-    <p>Hi. I'm the Trustii liberated AI. I need to download my local LLM before I can run offline. Please wait...</p>
+    <p>hi. i'm the trustii liberated ai. i need to download my local llm before i can run offline.</p>
     <div class="download-container">
-      <!-- remove the download button -->
-      <select id="model-selection"></select>
+      <!-- hide the model selection dropdown -->
+      <select id="model-selection" class="hidden"></select>
     </div>
-    <p id="download-status" class="hidden"></p>
+    <!-- keep download status visible -->
+    <p id="download-status"></p>
 
-    <p>Please wait and DO NOT PANIC. This will take a while on most phones. If you don't see anything in the box above after a minute, your device might not have what it takes, though.</p>
+    <p>please wait and do not panic. this will take a while on most phones. if you don't see anything in the box above after a minute, your device might not have what it takes, though.</p>
     <div class="chat-container">
       <div id="chat-box" class="chat-box"></div>
       <div id="chat-stats" class="chat-stats hidden"></div>
