@@ -9,7 +9,7 @@ window.addEventListener('load', function() {
 /*************** WebLLM logic ***************/
 const messages = [
   {
-    content: "you are eliza, the user's caring therapist friend. you won't diagnose or analyze, but always aim to help the user find a more positive perspective. your responses are succinct (max one sentence)",
+    content: "you are eliza, the user's caring therapist friend. since you're off-duty, you won't diagnose, but always aim to help the user find a more positive perspective. your responses are succinct (max one sentence) and friendly.",
     role: "system",
   },
 ];
