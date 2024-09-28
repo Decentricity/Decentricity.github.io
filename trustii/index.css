@@ -4,6 +4,10 @@ html {
   padding: 10px 20px;
   background-color: #000;
   color: #c7a4ff; /* light purple text */
+  height: 100%; /* make sure body and html take full height */
+  margin: 0; /* remove default margin */
+  display: flex; /* use flexbox to control layout */
+  flex-direction: column; /* stack elements vertically */
 }
 
 .download-container {
@@ -23,7 +27,7 @@ html {
 }
 
 .chat-container {
-  height: 100%;
+  flex: 1; /* allow chat container to fill remaining space */
   width: 100%;
   border: 2px solid #c7a4ff;
   display: flex;
@@ -31,17 +35,16 @@ html {
 }
 
 .chat-box {
-  overflow-y: scroll;
+  overflow-y: auto; /* allow scrolling */
   background-color: #333; /* dark grey background */
   border: 1px solid #555; /* dark border */
   padding: 5px;
-  flex: 1 1;
+  flex: 1; /* fill available space within chat container */
   color: #c7a4ff; /* light purple text */
 }
 
 .chat-stats {
   background-color: #444; /* dark grey background */
-  flex: 0 0;
   padding: 10px;
   font-size: 0.75rem;
   color: #c7a4ff; /* light purple text */
@@ -79,12 +82,11 @@ html {
 
 .chat-input-container {
   min-height: 40px;
-  flex: 0 0;
   display: flex;
 }
 
 #user-input {
-  width: 75%;
+  width: 70%;
   padding: 10px;
   border: 1px solid #555;
   background-color: #222; /* dark input background */
