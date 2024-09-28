@@ -27,8 +27,8 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 async function initializeWebLLMEngine() {
   document.getElementById("download-status").classList.remove("hidden");
   const config = {
-    temperature: 1.0,
-    top_p: 1,
+    temperature: 0.7,
+    top_p: 0.7,
   };
   await engine.reload(selectedModel, config);
 }
