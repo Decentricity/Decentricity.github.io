@@ -23,7 +23,7 @@ html {
 }
 
 .chat-container {
-  height: 400px;
+  height: 100%;
   width: 100%;
   border: 2px solid #c7a4ff;
   display: flex;
@@ -84,7 +84,7 @@ html {
 }
 
 #user-input {
-  width: 70%;
+  width: 75%;
   padding: 10px;
   border: 1px solid #555;
   background-color: #222; /* dark input background */
