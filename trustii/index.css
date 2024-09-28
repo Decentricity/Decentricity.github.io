@@ -1,40 +1,47 @@
 body,
 html {
   font-family: Arial, sans-serif;
-  padding: 0; /* remove padding */
-  margin: 0; /* remove margin */
-  height: 100vh; /* fill viewport height */
+  padding: 10px 20px;
   background-color: #000;
   color: #c7a4ff; /* light purple text */
-  display: flex;
-  flex-direction: column;
 }
 
 .download-container {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#download-status {
+  border: solid 1px #c7a4ff;
+  box-shadow:
+    0 10px 15px -3px rgba(255, 255, 255, 0.1),
+    0 4px 6px -2px rgba(255, 255, 255, 0.05);
   padding: 10px;
+  background-color: #1a1a1a; /* dark background */
+  color: #c7a4ff; /* light purple text */
 }
 
 .chat-container {
-  flex: 1; /* allow it to expand */
+  height: 400px;
+  width: 100%;
+  border: 2px solid #c7a4ff;
   display: flex;
   flex-direction: column;
-  border: 2px solid #c7a4ff;
-  margin: 10px; /* add some spacing around */
 }
 
 .chat-box {
-  flex: 1; /* allow chat-box to grow */
-  overflow-y: auto; /* scroll only on overflow */
+  overflow-y: scroll;
   background-color: #333; /* dark grey background */
   border: 1px solid #555; /* dark border */
   padding: 5px;
+  flex: 1 1;
   color: #c7a4ff; /* light purple text */
 }
 
 .chat-stats {
   background-color: #444; /* dark grey background */
+  flex: 0 0;
   padding: 10px;
   font-size: 0.75rem;
   color: #c7a4ff; /* light purple text */
@@ -43,58 +50,54 @@ html {
 .message-container {
   width: 100%;
   display: flex;
-  margin-bottom: 10px; /* add some spacing */
 }
 
 .message {
   padding: 10px;
-  margin: 5px;
+  margin: 10px 0;
   border-radius: 10px;
-  max-width: 80%; /* keep speech bubbles narrow */
+  width: fit-content;
 }
 
 .message-container.user {
-  justify-content: flex-end;
-}
-
-.message-container.user .message {
-  background-color: #7b5eff; /* light purple */
-  color: #000; /* black text */
-  align-self: flex-end;
+  justify-content: end;
 }
 
 .message-container.assistant {
-  justify-content: flex-start;
+  justify-content: start;
+}
+
+.message-container.user .message {
+  background: #7b5eff; /* light purple background */
+  color: #000; /* black text */
 }
 
 .message-container.assistant .message {
-  background-color: #222; /* very dark grey */
+  background: #222; /* very dark grey */
   color: #c7a4ff; /* light purple text */
-  align-self: flex-start;
 }
 
 .chat-input-container {
+  min-height: 40px;
+  flex: 0 0;
   display: flex;
-  padding: 10px;
-  border-top: 1px solid #555; /* separator between chat and input */
 }
 
 #user-input {
-  flex: 1; /* allow input to expand */
+  width: 70%;
   padding: 10px;
   border: 1px solid #555;
   background-color: #222; /* dark input background */
   color: #c7a4ff; /* light purple text */
-  margin-right: 10px;
 }
 
 button {
+  width: 25%;
   padding: 10px;
   border: none;
   background-color: #7b5eff; /* light purple button */
   color: #000; /* black text */
   cursor: pointer;
-  flex-shrink: 0; /* prevent button from shrinking */
 }
 
 button:disabled {
