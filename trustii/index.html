@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>simple chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <p>Hi. I'm the Trustii liberated AI. I need to download my local LLM before I can run offline. Please wait...</p>
+    <div class="download-container">
+      <!-- remove the download button -->
+      <select id="model-selection"></select>
+    </div>
+    <p id="download-status" class="hidden"></p>
+
+    <p>Please wait and DO NOT PANIC. This will take a while on most phones. If you don't see anything in the box above after a minute, your device might not have what it takes, though.</p>
+    <div class="chat-container">
+      <div id="chat-box" class="chat-box"></div>
+      <div id="chat-stats" class="chat-stats hidden"></div>
+      <div class="chat-input-container">
+        <input type="text" id="user-input" placeholder="type a message..." />
+        <button id="send" disabled>send</button>
+      </div>
+    </div>
+
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
+
