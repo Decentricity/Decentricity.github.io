@@ -10,9 +10,11 @@
   <body>
     <p>Step 1: Initialize WebLLM and Download Model</p>
     <div class="download-container">
-      <select id="model-selection"></select>
+      <!-- hide model selection -->
+      <select id="model-selection" class="hidden"></select>
       <button id="download">Download</button>
     </div>
+    <!-- initially hidden until download is pressed -->
     <p id="download-status" class="hidden"></p>
 
     <p>Step 2: Chat</p>
@@ -28,3 +30,4 @@
     <script src="./index.js" type="module"></script>
   </body>
 </html>
+
