@@ -40,6 +40,39 @@ html {
   color: #c7a4ff; /* light purple text */
 }
 
+.message-container {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px; /* add some spacing */
+}
+
+.message {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
+  max-width: 80%; /* keep speech bubbles narrow */
+}
+
+.message-container.user {
+  justify-content: flex-end;
+}
+
+.message-container.user .message {
+  background-color: #7b5eff; /* light purple */
+  color: #000; /* black text */
+  align-self: flex-end;
+}
+
+.message-container.assistant {
+  justify-content: flex-start;
+}
+
+.message-container.assistant .message {
+  background-color: #222; /* very dark grey */
+  color: #c7a4ff; /* light purple text */
+  align-self: flex-start;
+}
+
 .chat-input-container {
   display: flex;
   padding: 10px;
