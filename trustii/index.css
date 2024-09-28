@@ -2,11 +2,17 @@ body,
 html {
   font-family: Arial, sans-serif;
   padding: 10px 20px;
+  margin: 0; /* remove margin */
+  height: 100%; /* ensure full viewport height */
   background-color: #000;
   color: #c7a4ff; /* light purple text */
-  height: 100%; /* ensure body and html take full height */
-  margin: 0; /* remove any default margin */
-  overflow: hidden; /* hide scroll */
+  overflow: hidden; /* prevent page overflow */
+}
+
+#main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* full height for flex container */
 }
 
 .download-container {
@@ -26,11 +32,12 @@ html {
 }
 
 .chat-container {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
   border: 2px solid #c7a4ff;
-  overflow: hidden; /* prevent chat-container from expanding */
+  width: 100%;
 }
 
 .chat-box {
@@ -38,13 +45,12 @@ html {
   background-color: #333; /* dark grey background */
   border: 1px solid #555; /* dark border */
   padding: 5px;
-  flex: 1 1 auto;
+  flex-grow: 1; /* take up remaining space */
   color: #c7a4ff; /* light purple text */
 }
 
 .chat-stats {
   background-color: #444; /* dark grey background */
-  flex: 0 0 auto;
   padding: 10px;
   font-size: 0.75rem;
   color: #c7a4ff; /* light purple text */
@@ -63,11 +69,11 @@ html {
 }
 
 .message-container.user {
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .message-container.assistant {
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .message-container.user .message {
@@ -81,13 +87,13 @@ html {
 }
 
 .chat-input-container {
-  min-height: 40px;
-  flex: 0 0 auto;
   display: flex;
+  border-top: 1px solid #555; /* add border to separate input */
+  padding: 10px;
 }
 
 #user-input {
-  width: 70%;
+  flex-grow: 1;
   padding: 10px;
   border: 1px solid #555;
   background-color: #222; /* dark input background */
@@ -95,12 +101,12 @@ html {
 }
 
 button {
-  width: 25%;
   padding: 10px;
   border: none;
   background-color: #7b5eff; /* light purple button */
   color: #000; /* black text */
   cursor: pointer;
+  margin-left: 5px; /* add spacing between input and button */
 }
 
 button:disabled {
@@ -114,11 +120,4 @@ button:hover:not(:disabled) {
 
 .hidden {
   display: none;
-}
-
-/* ensure the main container takes full height */
-#main-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* full viewport height */
 }
