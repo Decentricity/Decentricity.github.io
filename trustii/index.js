@@ -11,7 +11,7 @@ const messages = [
 const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
-let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k";
+let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k"; // explicitly set default model
 
 // callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
@@ -26,7 +26,7 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
 async function initializeWebLLMEngine() {
   document.getElementById("download-status").classList.remove("hidden");
-  selectedModel = document.getElementById("model-selection").value;
+  // don't change selectedModel based on the dropdown value anymore
   const config = {
     temperature: 1.0,
     top_p: 1,
@@ -143,7 +143,6 @@ availableModels.forEach((modelId) => {
 document.getElementById("model-selection").value = selectedModel;
 
 // automatically download the model when the page loads
-selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k"; // explicitly set default model
 initializeWebLLMEngine().then(() => {
   document.getElementById("send").disabled = false;
 });
