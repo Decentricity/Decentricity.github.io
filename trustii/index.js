@@ -3,7 +3,7 @@ import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 /*************** WebLLM logic ***************/
 const messages = [
   {
-    content: "you are the user's close friend. you're sharp, witty, and sometimes sardonic. your responses are succinct (max two sentences).",
+    content: "you are the user's best friend. you're sharp, witty, and sometimes sardonic. your responses are short and succinct (just 1 sentence long).",
     role: "system",
   },
 ];
@@ -12,7 +12,7 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
 // corrected to use the model id from your list
-let selectedModel = "Qwen2.5-1.5B-Instruct-q4f32_1-MLC";
+let selectedModel = "SmolLM-1.7B-Instruct-q4f16_1-MLC";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
