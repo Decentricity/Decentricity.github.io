@@ -2,6 +2,8 @@ body,
 html {
   font-family: Arial, sans-serif;
   padding: 10px 20px;
+  background-color: #000;
+  color: #c7a4ff; /* light purple text */
 }
 
 .download-container {
@@ -11,34 +13,38 @@ html {
 }
 
 #download-status {
-  border: solid 1px black;
+  border: solid 1px #c7a4ff;
   box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    0 10px 15px -3px rgba(255, 255, 255, 0.1),
+    0 4px 6px -2px rgba(255, 255, 255, 0.05);
   padding: 10px;
+  background-color: #1a1a1a; /* dark background */
+  color: #c7a4ff; /* light purple text */
 }
 
 .chat-container {
   height: 400px;
   width: 100%;
-  border: 2px solid black;
+  border: 2px solid #c7a4ff;
   display: flex;
   flex-direction: column;
 }
 
 .chat-box {
   overflow-y: scroll;
-  background-color: #c3c3c3;
-  border: 1px solid #ccc;
+  background-color: #333; /* dark grey background */
+  border: 1px solid #555; /* dark border */
   padding: 5px;
   flex: 1 1;
+  color: #c7a4ff; /* light purple text */
 }
 
 .chat-stats {
-  background-color: #d3eceb;
+  background-color: #444; /* dark grey background */
   flex: 0 0;
   padding: 10px;
   font-size: 0.75rem;
+  color: #c7a4ff; /* light purple text */
 }
 
 .message-container {
@@ -62,13 +68,13 @@ html {
 }
 
 .message-container.user .message {
-  background: #007bff;
-  color: #fff;
+  background: #7b5eff; /* light purple background */
+  color: #000; /* black text */
 }
 
 .message-container.assistant .message {
-  background: #f1f0f0;
-  color: #333;
+  background: #222; /* very dark grey */
+  color: #c7a4ff; /* light purple text */
 }
 
 .chat-input-container {
@@ -80,25 +86,27 @@ html {
 #user-input {
   width: 70%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
+  background-color: #222; /* dark input background */
+  color: #c7a4ff; /* light purple text */
 }
 
 button {
   width: 25%;
   padding: 10px;
   border: none;
-  background-color: #007bff;
-  color: white;
+  background-color: #7b5eff; /* light purple button */
+  color: #000; /* black text */
   cursor: pointer;
 }
 
 button:disabled {
-  background-color: lightgray;
+  background-color: #555; /* dark grey */
   cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: #6e4fd8; /* darker purple */
 }
 
 .hidden {
