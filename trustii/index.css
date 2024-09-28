@@ -2,7 +2,7 @@
 
 body,
 html {
-  font-family: Roboto, sans-serif !important;
+  font-family: Roboto, monospace, sans-serif !important;
   padding: 10px 20px;
   margin: 0; /* remove margin */
   height: 100%; /* ensure full viewport height */
