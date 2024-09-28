@@ -8,11 +8,11 @@ const messages = [
   },
 ];
 
-// set the correct default model name
 const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
-let selectedModel = "Qwen2.5-1.5B-Instruct-q4f321-MLC"; // set correct model name
+// corrected to use the model id from your list
+let selectedModel = "Qwen2.5-1.5B-Instruct-q4f32_1-MLC";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
@@ -25,13 +25,11 @@ const engine = new webllm.MLCEngine();
 engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
 async function initializeWebLLMEngine() {
-  // show download status only when download starts
   document.getElementById("download-status").classList.remove("hidden");
   const config = {
     temperature: 1.0,
     top_p: 1,
   };
-  // reload engine with the correct selected model
   await engine.reload(selectedModel, config);
 }
 
