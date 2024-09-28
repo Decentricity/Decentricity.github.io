@@ -3,7 +3,7 @@ import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 /*************** WebLLM logic ***************/
 const messages = [
   {
-    content: "You are a helpful AI agent helping users.",
+    content: "you are a helpful ai agent helping users.",
     role: "system",
   },
 ];
@@ -13,13 +13,13 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map(
 );
 let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k";
 
-// Callback function for initializing progress
+// callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
   console.log("initialize", report.progress);
   document.getElementById("download-status").textContent = report.text;
 }
 
-// Create engine instance
+// create engine instance
 const engine = new webllm.MLCEngine();
 engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
@@ -77,7 +77,7 @@ function onMessageSend() {
   document.getElementById("user-input").value = "";
   document
     .getElementById("user-input")
-    .setAttribute("placeholder", "Generating...");
+    .setAttribute("placeholder", "generating...");
 
   const aiMessage = {
     content: "typing...",
@@ -121,7 +121,7 @@ function appendMessage(message) {
 
   container.appendChild(newMessage);
   chatBox.appendChild(container);
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+  chatBox.scrollTop = chatBox.scrollHeight; // scroll to the latest message
 }
 
 function updateLastMessage(content) {
@@ -140,11 +140,14 @@ availableModels.forEach((modelId) => {
   document.getElementById("model-selection").appendChild(option);
 });
 document.getElementById("model-selection").value = selectedModel;
-document.getElementById("download").addEventListener("click", function () {
-  initializeWebLLMEngine().then(() => {
-    document.getElementById("send").disabled = false;
-  });
+
+// automatically download the model when the page loads
+initializeWebLLMEngine().then(() => {
+  document.getElementById("send").disabled = false;
 });
+
+// bind the "send" button to message sending
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
+
