@@ -18,7 +18,7 @@ function typeWriter(elementId, text, delay = 50) {
 window.addEventListener('load', function() {
   typeWriter('title', "Hi I'm Eliza from Trustii.", 100);
   setTimeout(() => {
-    typeWriter('liberateme', 'Press start to liberate me into your phone so I can run offline with you.', 50);
+    typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
   }, 1500); // delay to start liberate text animation
 });
 

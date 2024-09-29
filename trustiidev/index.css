@@ -127,6 +127,34 @@ html {
   margin: 0;
   padding-left: 20px; /* adjust as necessary to make the list look balanced */
 }
+strong {
+  font-family: 'Roboto Mono', monospace;
+  color: #ff00ff; /* neon pink */
+  font-size: 0.9rem; /* slightly smaller font */
+  text-transform: uppercase; /* make it all uppercase */
+  letter-spacing: 1px; /* space out the letters */
+}
+
+ul {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem; /* smaller font size */
+  color: #c7a4ff; /* light purple text */
+  padding-left: 20px; /* adjust to align with the rest of the content */
+  line-height: 1.4; /* adjust line height for better readability */
+  margin: 10px 0; /* space around the list */
+}
+
+ul li {
+  margin-bottom: 5px; /* add spacing between list items */
+}
+
+code {
+  font-family: 'Roboto Mono', monospace;
+  background-color: #222; /* dark background for code */
+  color: #7b5eff; /* light purple text for code */
+  padding: 2px 4px; /* add padding around code */
+  border-radius: 4px; /* rounded corners */
+}
 
 
 
