@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Meditation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Calm Meditation - Offline Sounds</h1>
+    <p>Download calming nature sounds and meditate offline.</p>
+
+    <button onclick="playSound('/sounds/rain.mp3')">Rain</button>
+    <button onclick="playSound('/sounds/forest.mp3')">Forest</button>
+    <button onclick="playSound('/sounds/waves.mp3')">Waves</button>
+
+    <audio id="player" controls></audio>
+
+    <p id="status">Preparing to download sounds...</p>
+
+    <script src="app.js"></script>
+</body>
+</html>
