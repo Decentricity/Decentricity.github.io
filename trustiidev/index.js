@@ -53,6 +53,12 @@ async function initializeWebLLMEngine() {
     top_p: 0.7,
   };
   await engine.reload(selectedModel, config);
+  
+  // when the model is fully loaded, enable the send button
+  document.getElementById("send").disabled = false;
+
+  // add the typewriter effect for the liberateme element
+  typeWriter('liberateme', "i am a liberated AI. turn off your internet and speak to me below.", 50);
 }
 
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
@@ -111,8 +117,6 @@ function onMessageSend() {
     updateLastMessage(finalMessage);
     document.getElementById("send").disabled = false;
     
-  // typewriter effect to change liberateme text
-  typeWriter('liberateme', "i am a liberated AI. turn off your internet and speak to me below.", 50);
     const usageText =
       `prompt_tokens: ${usage.prompt_tokens}, ` +
       `completion_tokens: ${usage.completion_tokens}, ` +
