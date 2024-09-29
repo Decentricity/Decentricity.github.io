@@ -116,6 +116,19 @@ html {
   text-shadow: 0 0 5px #7b5eff, 0 0 10px #ff00ff;
 }
 
+#download-status {
+  overflow: auto; /* allow the content to stay within the box */
+  padding: 10px; /* adjust padding to make it visually balanced */
+  word-wrap: break-word; /* ensure long lines break correctly */
+  box-sizing: border-box; /* include padding and border in the element’s total width */
+}
+
+#download-status ul {
+  margin: 0;
+  padding-left: 20px; /* adjust as necessary to make the list look balanced */
+}
+
+
 
 button {
   padding: 10px;
