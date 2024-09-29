@@ -1,9 +1,25 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
-/*************** Force scroll on page load ***************/
+function typeWriter(elementId, text, delay = 50) {
+  const element = document.getElementById(elementId);
+  let index = 0;
+  function type() {
+    if (index < text.length) {
+      element.textContent += text.charAt(index);
+      index++;
+      setTimeout(type, delay);
+    }
+  }
+  element.textContent = ""; // clear the content initially
+  type();
+}
+
+// on window load, animate the title and liberate text
 window.addEventListener('load', function() {
-  // Timeout allows page rendering to complete before scrolling
-  setTimeout(function() { window.scrollTo(0, 1); }, 100);
+  typeWriter('title', "Hi I'm Eliza from Trustii.", 100);
+  setTimeout(() => {
+    typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
+  }, 1500); // delay to start liberate text animation
 });
 
 /*************** WebLLM logic ***************/
@@ -147,6 +163,17 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 document.getElementById("download").addEventListener("click", function () {
+  // hide start button
+  document.getElementById("download").classList.add("hidden");
+
+  // hide important and ul sections
+  document.querySelector("ul").classList.add("hidden");
+  document.querySelector("strong").classList.add("hidden");
+
+  // typewriter effect to change liberateme text
+  typeWriter('liberateme', "i am liberating my ai.", 50);
+
+  // initialize the webllm engine
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
@@ -154,3 +181,4 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
+

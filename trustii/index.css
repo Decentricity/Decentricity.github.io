@@ -102,6 +102,76 @@ html {
   color: #c7a4ff; /* light purple text */
 }
 
+#title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2rem;
+  color: #c7a4ff;
+  text-shadow: 0 0 10px #c7a4ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
+
+#liberateme {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.5rem;
+  color: #7b5eff;
+  text-shadow: 0 0 5px #7b5eff, 0 0 10px #ff00ff;
+}
+
+#download-status {
+  overflow: auto; /* allow the content to stay within the box */
+  padding: 10px; /* adjust padding to make it visually balanced */
+  word-wrap: break-word; /* ensure long lines break correctly */
+  box-sizing: border-box; /* include padding and border in the element’s total width */
+}
+
+#download-status ul {
+  margin: 0;
+  padding-left: 20px; /* adjust as necessary to make the list look balanced */
+}
+strong {
+  font-family: 'Roboto Mono', monospace;
+  color: #ff00ff; /* neon pink */
+  font-size: 0.9rem; /* slightly smaller font */
+  text-transform: uppercase; /* make it all uppercase */
+  letter-spacing: 1px; /* space out the letters */
+}
+
+ul {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem; /* smaller font size */
+  color: #c7a4ff; /* light purple text */
+  padding-left: 20px; /* adjust to align with the rest of the content */
+  line-height: 1.4; /* adjust line height for better readability */
+  margin: 10px 0; /* space around the list */
+}
+
+ul li {
+  margin-bottom: 5px; /* add spacing between list items */
+}
+
+code {
+  font-family: 'Roboto Mono', monospace;
+  background-color: #222; /* dark background for code */
+  color: #7b5eff; /* light purple text for code */
+  padding: 2px 4px; /* add padding around code */
+  border-radius: 4px; /* rounded corners */
+}
+
+button#download {
+  width: 100%; /* make button fill the width of its container */
+  padding: 15px;
+  border: none;
+  background-color: #7b5eff; /* light purple button */
+  color: #000; /* black text */
+  cursor: pointer;
+  font-size: 1.2rem; /* make it larger */
+  text-align: center;
+}
+
+button#download:hover:not(:disabled) {
+  background-color: #6e4fd8; /* darker purple */
+}
+
+
 button {
   padding: 10px;
   border: none;
