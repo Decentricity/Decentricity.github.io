@@ -102,6 +102,21 @@ html {
   color: #c7a4ff; /* light purple text */
 }
 
+#title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2rem;
+  color: #c7a4ff;
+  text-shadow: 0 0 10px #c7a4ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
+
+#liberateme {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.5rem;
+  color: #7b5eff;
+  text-shadow: 0 0 5px #7b5eff, 0 0 10px #ff00ff;
+}
+
+
 button {
   padding: 10px;
   border: none;
