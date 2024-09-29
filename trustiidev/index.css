@@ -156,6 +156,20 @@ code {
   border-radius: 4px; /* rounded corners */
 }
 
+button#download {
+  width: 100%; /* make button fill the width of its container */
+  padding: 15px;
+  border: none;
+  background-color: #7b5eff; /* light purple button */
+  color: #000; /* black text */
+  cursor: pointer;
+  font-size: 1.2rem; /* make it larger */
+  text-align: center;
+}
+
+button#download:hover:not(:disabled) {
+  background-color: #6e4fd8; /* darker purple */
+}
 
 
 button {

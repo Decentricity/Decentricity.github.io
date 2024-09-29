@@ -22,7 +22,6 @@ window.addEventListener('load', function() {
   }, 1500); // delay to start liberate text animation
 });
 
-
 /*************** WebLLM logic ***************/
 const messages = [
   {
@@ -164,6 +163,17 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 document.getElementById("download").addEventListener("click", function () {
+  // hide start button
+  document.getElementById("download").classList.add("hidden");
+
+  // hide important and ul sections
+  document.querySelector("ul").classList.add("hidden");
+  document.querySelector("strong").classList.add("hidden");
+
+  // typewriter effect to change liberateme text
+  typeWriter('liberateme', "i am liberating my ai.", 50);
+
+  // initialize the webllm engine
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
@@ -171,3 +181,4 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
+
