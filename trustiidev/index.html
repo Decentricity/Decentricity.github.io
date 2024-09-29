@@ -1,0 +1,39 @@
+
+<!doctype html>
+<html>
+<div id="main-container">
+  <head>
+    <title>Eliza The Offline AI by Trustii</title>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <p id="title">Hi I'm Eliza from Trustii. </p>
+<p id="liberateme">Press start to liberate me into your phone so I can run offline with you.</p>
+    <div class="download-container">
+      <!-- hide model selection -->
+      <select id="model-selection" class="hidden"></select>
+      <button id="download">Start</button>
+    </div>
+    <!-- initially hidden until download is pressed -->
+    <p id="download-status" class="hidden">I will need a while to download. (Using Starlink, it took my creator decentricity 7 minutes.) BE PATIENT. Wait for 'Fetching Params' to show up in this section. Only reload if you do not see it after a couple of minutes. Once you see '100% completed', you can turn on airplane mode and start chatting to me in the chatbox below.</p>
+    <div class="chat-container">
+      <div id="chat-box" class="chat-box"></div>
+      <div id="chat-stats" class="chat-stats hidden"></div>
+      <div class="chat-input-container">
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button id="send" disabled>Send</button>
+      </div>
+    </div>
+
+    <script src="./index.js" type="module"></script>
+  </body>
+
+
+  <!-- existing HTML structure goes here -->
+</div>
+</html>
+
