@@ -25,7 +25,7 @@ window.addEventListener('load', function() {
 /*************** WebLLM logic ***************/
 const messages = [
   {
-    content: "you are eliza, the user's caring therapist friend. your responses are short and succinct (max 1 sentence).",
+    content: "Please speak like Hermione Granger in Harry Potter. your responses are short and succinct (max 1 sentence).",
     role: "system",
   },
 ];
