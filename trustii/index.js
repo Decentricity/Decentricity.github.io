@@ -13,16 +13,14 @@ function typeWriter(elementId, text, delay = 50) {
   element.textContent = ""; // clear the content initially
   type();
 }
-
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
   // type out the initial message without the link
   typeWriter('title', "Hi I'm Eliza from Bestee.ai.", 100);
-  
-  // once typing is done, replace the plain text with a clickable link
+
+  // replace the plain text with a clickable link after the typing effect is completed
   setTimeout(() => {
-    const titleElement = document.getElementById('title');
-    titleElement.innerHTML = 'Hi I\'m Eliza from <a href="https://bestee.ai" target="_blank">Bestee.ai</a>.';
+    document.getElementById('title').innerHTML = 'Hi I\'m Eliza from <a href="https://bestee.ai" target="_blank">Bestee.ai</a>.';
   }, 100 * ("Hi I'm Eliza from Bestee.ai.".length + 1)); // adjust timeout to match typewriter speed
   
   // type out the liberate text
