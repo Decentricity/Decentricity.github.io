@@ -119,7 +119,7 @@ function onMessageSend() {
     document.getElementById("send").disabled = false;
     
   // typewriter effect to change liberateme text
-  typeWriter('liberateme', "i am a liberated AI. turn off your internet and speak to me below.", 50);
+  typeWriter('liberateme', "Bestee ready for airplane mode.", 50);
     const usageText =
       `prompt_tokens: ${usage.prompt_tokens}, ` +
       `completion_tokens: ${usage.completion_tokens}, ` +
