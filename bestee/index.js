@@ -58,7 +58,7 @@ async function initializeWebLLMEngine() {
   document.getElementById("send").disabled = false;
 
   // add the typewriter effect for the liberateme element
-  typeWriter('liberateme', "data can be safely turned off", 50);
+  typeWriter('liberateme', "data can be turned off", 50);
 }
 
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
