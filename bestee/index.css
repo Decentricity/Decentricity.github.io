@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body,
+html {
+  font-family: Roboto, monospace, sans-serif !important;
+  padding: 10px 20px;
+  margin: 0; /* remove margin */
+  height: 100%; /* ensure full viewport height */
+  background-color: #000;
+  color: #c7a4ff; /* light purple text */
+  overflow: hidden; /* prevent page overflow */
+}
+
+#main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* full height for flex container */
+}
+
+.download-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#download-status {
+  border: solid 1px #c7a4ff;
+  box-shadow:
+    0 10px 15px -3px rgba(255, 255, 255, 0.1),
+    0 4px 6px -2px rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  background-color: #1a1a1a; /* dark background */
+  color: #c7a4ff; /* light purple text */
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  border: 2px solid #c7a4ff;
+  width: 100%;
+}
+
+.chat-box {
+  overflow-y: auto; /* allow scrolling */
+  background-color: #333; /* dark grey background */
+  border: 1px solid #555; /* dark border */
+  padding: 5px;
+  flex-grow: 1; /* take up remaining space */
+  color: #c7a4ff; /* light purple text */
+}
+
+.chat-stats {
+  background-color: #444; /* dark grey background */
+  padding: 10px;
+  font-size: 0.75rem;
+  color: #c7a4ff; /* light purple text */
+}
+
+.message-container {
+  width: 100%;
+  display: flex;
+}
+
+.message {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.message-container.user {
+  justify-content: flex-end;
+}
+
+.message-container.assistant {
+  justify-content: flex-start;
+}
+
+.message-container.user .message {
+  background: #7b5eff; /* light purple background */
+  color: #000; /* black text */
+}
+
+.message-container.assistant .message {
+  background: #222; /* very dark grey */
+  color: #c7a4ff; /* light purple text */
+}
+
+.chat-input-container {
+  display: flex;
+  border-top: 1px solid #555; /* add border to separate input */
+  padding: 10px;
+}
+
+#user-input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #555;
+  background-color: #222; /* dark input background */
+  color: #c7a4ff; /* light purple text */
+}
+
+#title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2rem;
+  color: #c7a4ff;
+  text-shadow: 0 0 10px #c7a4ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
+
+#liberateme {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.5rem;
+  color: #7b5eff;
+  text-shadow: 0 0 5px #7b5eff, 0 0 10px #ff00ff;
+}
+
+#download-status {
+  overflow: auto; /* allow the content to stay within the box */
+  padding: 10px; /* adjust padding to make it visually balanced */
+  word-wrap: break-word; /* ensure long lines break correctly */
+  box-sizing: border-box; /* include padding and border in the element’s total width */
+}
+
+#download-status ul {
+  margin: 0;
+  padding-left: 20px; /* adjust as necessary to make the list look balanced */
+}
+strong {
+  font-family: 'Roboto Mono', monospace;
+  color: #ff00ff; /* neon pink */
+  font-size: 0.9rem; /* slightly smaller font */
+  text-transform: uppercase; /* make it all uppercase */
+  letter-spacing: 1px; /* space out the letters */
+}
+
+ul {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem; /* smaller font size */
+  color: #c7a4ff; /* light purple text */
+  padding-left: 20px; /* adjust to align with the rest of the content */
+  line-height: 1.4; /* adjust line height for better readability */
+  margin: 10px 0; /* space around the list */
+}
+
+ul li {
+  margin-bottom: 5px; /* add spacing between list items */
+}
+
+code {
+  font-family: 'Roboto Mono', monospace;
+  background-color: #222; /* dark background for code */
+  color: #7b5eff; /* light purple text for code */
+  padding: 2px 4px; /* add padding around code */
+  border-radius: 4px; /* rounded corners */
+}
+
+button#download {
+  width: 100%; /* make button fill the width of its container */
+  padding: 15px;
+  border: none;
+  background-color: #7b5eff; /* light purple button */
+  color: #000; /* black text */
+  cursor: pointer;
+  font-size: 1.2rem; /* make it larger */
+  text-align: center;
+}
+
+button#download:hover:not(:disabled) {
+  background-color: #6e4fd8; /* darker purple */
+}
+
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #7b5eff; /* light purple button */
+  color: #000; /* black text */
+  cursor: pointer;
+  margin-left: 5px; /* add spacing between input and button */
+}
+
+button:disabled {
+  background-color: #555; /* dark grey */
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #6e4fd8; /* darker purple */
+}
+
+.hidden {
+  display: none;
+}
