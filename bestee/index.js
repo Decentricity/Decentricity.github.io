@@ -16,9 +16,9 @@ function typeWriter(elementId, text, delay = 50) {
 
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
-  typeWriter('title', "Hi I'm Eliza from Trustii.", 100);
+
   setTimeout(() => {
-    typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
+    typeWriter('liberateme', 'press start to download AI model.', 50);
   }, 1500); // delay to start liberate text animation
 });
 
@@ -58,7 +58,7 @@ async function initializeWebLLMEngine() {
   document.getElementById("send").disabled = false;
 
   // add the typewriter effect for the liberateme element
-  typeWriter('liberateme', "i am a liberated AI. turn off your internet and speak to me below.", 50);
+  typeWriter('liberateme', "data can be safely turned off", 50);
 }
 
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
