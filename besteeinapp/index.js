@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
   // trigger the download button click
   document.getElementById('download').click();
   setTimeout(() => {
-    typeWriter('liberateme', 'press start to download AI model.', 50);
+    typeWriter('liberateme', 'downloading AI model', 50);
   }, 1500); // delay to start liberate text animation
 });
 
