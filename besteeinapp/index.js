@@ -16,6 +16,9 @@ function typeWriter(elementId, text, delay = 50) {
 
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
+
+  // trigger the download button click
+  document.getElementById('download').click();
   typeWriter('title', "Hi I'm Eliza from Trustii.", 100);
   setTimeout(() => {
     typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
