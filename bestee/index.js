@@ -13,12 +13,19 @@ function typeWriter(elementId, text, delay = 50) {
   element.textContent = ""; // clear the content initially
   type();
 }
-
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
+  // type out the initial message without the link
+  typeWriter('title', "Hi I'm Eliza from Bestee.ai.", 100);
 
+  // replace the plain text with a clickable link after the typing effect is completed
   setTimeout(() => {
-    typeWriter('liberateme', 'press start to download AI model.', 50);
+    document.getElementById('title').innerHTML = 'Hi I\'m Eliza from <a href="https://bestee.ai" target="_blank">Bestee.ai</a>.';
+  }, 100 * ("Hi I'm Eliza from Bestee.ai.".length + 1)); // adjust timeout to match typewriter speed
+  
+  // type out the liberate text
+  setTimeout(() => {
+    typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
   }, 1500); // delay to start liberate text animation
 });
 
@@ -53,12 +60,6 @@ async function initializeWebLLMEngine() {
     top_p: 0.7,
   };
   await engine.reload(selectedModel, config);
-  
-  // when the model is fully loaded, enable the send button
-  document.getElementById("send").disabled = false;
-
-  // add the typewriter effect for the liberateme element
-  typeWriter('liberateme', "data can be turned off", 50);
 }
 
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
@@ -117,6 +118,8 @@ function onMessageSend() {
     updateLastMessage(finalMessage);
     document.getElementById("send").disabled = false;
     
+  // typewriter effect to change liberateme text
+  typeWriter('liberateme', "Bestee ready for airplane mode.", 50);
     const usageText =
       `prompt_tokens: ${usage.prompt_tokens}, ` +
       `completion_tokens: ${usage.completion_tokens}, ` +
