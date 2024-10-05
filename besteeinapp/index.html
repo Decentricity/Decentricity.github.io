@@ -1,0 +1,50 @@
+
+<!doctype html>
+<html>
+<div id="main-container">
+  <head>
+    <title>Eliza The Offline AI by Trustii</title>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <p id="title">-/|\-------</p>
+<p id="liberateme"> (´｡• ◡ •｡`) ♡.</p>
+    <div class="download-container">
+      <!-- hide model selection -->
+      <select id="model-selection" class="hidden"></select>
+      <button id="download">Start</button>
+    </div>
+    <!-- initially hidden until download is pressed -->
+<p id="download-status" class="hidden">
+  downloading will take over 10 minutes. once it begins, this message will switch to show the download status. if it doesn't change after a while, something might be wrong – but it could still be working, just slowly. be patient!
+</p>
+  <br><br>
+  <strong>important:</strong>
+  <ul>
+    <li><strong>android users:</strong> please use <em>chrome</em> for the best experience.</li>
+    <li><strong>linux users:</strong> browsers installed via <em>snap</em> are not supported.</li>
+    <li><strong>ios users:</strong> not fully supported but safari is your best bet. please enable <em>webgpu</em> in <code>settings > safari</code>.</li>
+  </ul>
+
+
+    <div class="chat-container">
+      <div id="chat-box" class="chat-box"></div>
+      <div id="chat-stats" class="chat-stats hidden"></div>
+      <div class="chat-input-container">
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button id="send" disabled>Send</button>
+      </div>
+    </div>
+
+    <script src="./index.js" type="module"></script>
+  </body>
+
+
+  <!-- existing HTML structure goes here -->
+</div>
+</html>
+
