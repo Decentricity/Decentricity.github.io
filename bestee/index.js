@@ -16,16 +16,16 @@ function typeWriter(elementId, text, delay = 50) {
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
   // type out the initial message without the link
-  typeWriter('title', "Hi I'm Eliza from Bestee.ai.", 100);
+  typeWriter('title', "Activating Offline Mode", 100);
 
   // replace the plain text with a clickable link after the typing effect is completed
   setTimeout(() => {
-    document.getElementById('title').innerHTML = 'Hi I\'m Eliza from <a href="https://bestee.ai" target="_blank">Bestee.ai</a>.';
-  }, 100 * ("Hi I'm Eliza from Bestee.ai.".length + 1)); // adjust timeout to match typewriter speed
+    document.getElementById('title').innerHTML = '';
+  }, 100 * ("---".length + 1)); // adjust timeout to match typewriter speed
   
   // type out the liberate text
   setTimeout(() => {
-    typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
+    typeWriter('liberateme', 'press start to download local AI:', 50);
   }, 1500); // delay to start liberate text animation
 });
 
