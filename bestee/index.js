@@ -16,16 +16,16 @@ function typeWriter(elementId, text, delay = 50) {
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
   // type out the initial message without the link
-  typeWriter('title', "Activating Offline Mode", 100);
+  typeWriter('title', "Offline Mode", 100);
 
   // replace the plain text with a clickable link after the typing effect is completed
   setTimeout(() => {
-    document.getElementById('title').innerHTML = '';
-  }, 100 * ("---".length + 1)); // adjust timeout to match typewriter speed
+    document.getElementById('title').innerHTML = 'Offline Mode';
+  }, 100 * ("Hi I'm Eliza from Bestee.ai.".length + 1)); // adjust timeout to match typewriter speed
   
   // type out the liberate text
   setTimeout(() => {
-    typeWriter('liberateme', 'press start to download local AI:', 50);
+    typeWriter('liberateme', 'Press start to download Local AI.', 50);
   }, 1500); // delay to start liberate text animation
 });
 
@@ -119,7 +119,7 @@ function onMessageSend() {
     document.getElementById("send").disabled = false;
     
   // typewriter effect to change liberateme text
-  typeWriter('liberateme', "Bestee ready for airplane mode.", 50);
+  typeWriter('liberateme', "Running Local AI.", 50);
     const usageText =
       `prompt_tokens: ${usage.prompt_tokens}, ` +
       `completion_tokens: ${usage.completion_tokens}, ` +
