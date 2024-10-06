@@ -181,7 +181,7 @@ document.getElementById("download").addEventListener("click", function () {
   document.querySelector("strong").classList.add("hidden");
 
   // typewriter effect to change liberateme text
-  typeWriter('liberateme', "i am liberating my ai.", 50);
+  typeWriter('liberateme', "", 50);
 
   // initialize the webllm engine
   initializeWebLLMEngine().then(() => {
