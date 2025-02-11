@@ -41,7 +41,8 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
 // corrected to use the model id from your list
-let selectedModel = "Qwen2-1.5B-Instruct-q4f32_1-MLC";
+let selectedModel = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC";
+
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
