@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decentricity CyberOS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .terminal {
+      width: 90%;
+      max-width: 800px;
+      height: 80vh;
+      background: black;
+      border: 2px solid #00ff00;
+      padding: 10px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .terminal-content {
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      overflow: hidden;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .input-container {
+      display: flex;
+    }
+    .terminal-input {
+      background: black;
+      color: #00ff00;
+      border: none;
+      font-family: monospace;
+      font-size: 1rem;
+      outline: none;
+      flex-grow: 1;
+    }
+    .terminal-prompt {
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 1rem;
+      margin-right: 5px;
+    }
+    .suggested-topics {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 1rem;
+    }
+    .suggested-topics span {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .suggested-topics span:hover {
+      color: #00cc00;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-content" id="terminal"></div>
+    <div class="input-container">
+      <span class="terminal-prompt">> </span>
+      <input type="text" id="userInput" class="terminal-input" autofocus>
+    </div>
+    <div class="suggested-topics" id="suggestedTopics"></div>
+  </div>
+  <script>
+    const terminal = document.getElementById("terminal");
+    const userInput = document.getElementById("userInput");
+    const suggestedTopics = document.getElementById("suggestedTopics");
+    
+    const messages = [
+      "Booting Decentricity CyberOS...",
+      "Loading Engram: Cognitive Kernel v2.3...",
+      "Initializing Neural Interface...",
+      "Decrypting Core Memories...",
+      "Retrieving Cryptographic Keychains...",
+      "[WARNING] Memory Fragmentation Detected... Patching...",
+      "Reconstructing Decentralized Thought Process...",
+      "Running AI Coherence Check...",
+      "Loading Consciousness Drive: OK",
+      "Performing Cybernetic Integrity Check...",
+      "Engram Sync: 94.3%... 98.7%... 100%",
+      "[ALERT] External Connection Request Detected...",
+      "Authenticating Secure Access...",
+      "====================================",
+      "Loading the Decentricity expert system...",
+      "Initiating consciousness link...",
+      "Syncing with programmable logic...",
+      "All systems operational. You are talking to an 'old-school' chatbot with domain expertise in my career.",
+      "For a full LLM you can run offline on your browser, go to <a href='https://unconnected.ai/' target='_blank' style='color: #00ff00; text-decoration: underline;'>unconnected.ai</a>"
+
+    ];
+    
+    let index = 0;
+    function addLine() {
+      if (index < messages.length) {
+        const line = document.createElement("div");
+        line.innerHTML = messages[index];
+        if (Math.random() > 0.7) line.classList.add("glitch");
+        terminal.appendChild(line);
+        terminal.scrollTop = terminal.scrollHeight;
+        index++;
+        setTimeout(addLine, Math.random() * 800 + 200);
+      }
+    }
+    setTimeout(addLine, 1000);
+    
+const responses = {
+  "hello": "hi",
+  "hi": "hello",
+  "expert system": "as an AI researcher in college, i created a Prolog Expert System for Environmental Impact Assessment between 2007-2008, at a time when 'ai' was still a niche field. the core idea was simple but groundbreaking: ask users about their proposed business, then automatically compile an environmental impact assessment. back in 2008, many people dismissed ai as academic or frivolous, but i knew it was the next frontier. this project proved that knowledge-based expert systems could generate high-level regulatory reports, long before mainstream chatter about 'machine learning' took over.",
+  "crypto": "I am very active in the crypto field. I founded 3 pure-crypto projects and i have implemented multiple crypto integrations and implementations.",
+  "blockchain": "i co-founded blockchain zoo in 2017, when blockchain was still viewed by many as a passing trend. we assembled a team of experts, focusing on creating secure, transparent solutions for businesses. we later got listed in gartner as a recognized blockchain consulting firm.",
+  "raspberry pi": "i worked to integrate the qwen llm onto hardware like raspberry pi zero, hoping to democratize ai beyond massive data centers.",
+  "privacy": "debio focuses on privacy-preserving data—particularly for genomic and healthcare-related information. we leverage blockchain and zero-knowledge proofs to let individuals control their own biological data.",
+  "social media": "i launched myriad social as a decentralized, censorship-resistant platform, ensuring users own their identities and speak freely.",
+  "metaverse": "if web3 was about decentralized data, the metaverse seemed like the next logical frontier. i raised usd 500k to build realitychain, a metaverse infrastructure that hosted full-scale virtual concerts, including performances by a multi-grammy award-winning artist.",
+  "ai poetry": "robotpuisi was my foray into creative ai—an indonesian poetry bot on twitter that went unexpectedly viral. it ended up featured in yahoo news and e27, which blew my mind at the time.",
+  "library system": "this project holds a special place in my heart. with usd 20k in funding from ibm, i helped develop an ai-assisted library system aimed at visually impaired users.",
+  "crypto companies": "over the years, i've founded and co-founded several crypto-related organizations, including blockchain zoo, blocksphere, asosiasi blockchain indonesia, debio.network, myriad.social, realitychain.io, and nester.city.",
+  "indonesian blockchain association": "as a co-founder of the indonesian blockchain association, i've been actively involved in fostering blockchain adoption and collaboration within indonesia's tech ecosystem.",
+  "ibm": "during my tenure at ibm, i served as the territory general manager for migration factory, puresystems country leader, and senior consultant, bridging traditional it with emerging technologies.",
+  "transhumanism": "i consider myself a transhumanist, believing in the transformative power of technology to enhance human capabilities and improve our quality of life.",
+  "blocksphere": "as a partner at blocksphere.id, i've led various blockchain initiatives, collaborating with enterprises and governments to implement decentralized solutions.",
+  "kendi.io": "co-founding kendi.io allowed me to explore innovative blockchain applications, furthering my commitment to decentralized technologies.",
+  "decentralization": "i'm passionate about decentralization, which is evident in my projects like debio.network, myriad.social, and realitychain.io. these initiatives aim to give individuals more control over their data and online interactions.",
+  "bioinformatics": "combining my interests in biology and technology, i've ventured into bioinformatics through projects like debio.network, focusing on genomic data privacy and decentralized bioinformatics solutions.",
+  "public speaking": "i've shared my insights on blockchain and technology at various conferences and events, including talks on architecting genomic blockchains and the metaverse as a reality sidechain.",
+  "github": "on my github profile, i showcase a range of projects from decentralized technologies to creative ai endeavors, reflecting my diverse interests in the tech space.",
+  "robotpuisi": "robotpuisi was an indonesian poetry bot i developed, which gained significant attention and was featured in media outlets like yahoo news and e27.",
+  "realitychain": "i founded realitychain.io, a metaverse infrastructure project that hosted virtual concerts, including performances by multi-grammy award-winning artists.",
+  "myriad": "i launched myriad.social, a decentralized, censorship-resistant platform that ensures users own their identities and can speak freely.",
+  "debio": "debio.network focuses on privacy-preserving data, particularly for genomic and healthcare-related information, leveraging blockchain and zero-knowledge proofs.",
+  "blockchain zoo": "i co-founded blockchain zoo, assembling a team of experts to create secure, transparent blockchain solutions for businesses.",
+  "nester.city": "i co-founded nester.city, focusing on decentralized urban development and smart city solutions.",
+  "oct.network": "i'm involved with oct.network, exploring decentralized technologies and their applications across various industries.",
+  "uniqueone.network": "i contribute to uniqueone.network, a decentralized platform for artists and creators to showcase and monetize their work.",
+  "trustpanda": "i developed trustpanda, a chatbot that automates the process of recording information on the blockchain for safekeeping.",
+  "genomic data science": "i'm currently learning genomic data science and bioinformatics, aiming to bridge the gap between biology and technology.",
+  "environmental engineering": "i studied environmental engineering with a focus on microbiology and environmental informatics, which laid the foundation for my interdisciplinary approach to technology.",
+  "prolog": "i have experience with programming languages like prolog, which i used in developing an expert system for environmental impact analysis.",
+  "python": "i'm proficient in python, utilizing it in various projects ranging from bioinformatics to blockchain applications.",
+  "delphi": "i've worked with delphi/pascal/embarcadero in my earlier programming endeavors, building a foundation for my software development skills.",
+  "javascript": "i use javascript in web development projects, including decentralized applications and interactive platforms.",
+  "node-red": "i utilize node-red for low-code development, creating efficient workflows and automations in various projects.",
+  "mit app inventor": "i've explored mobile app development using mit app inventor 2, creating accessible applications with a focus on user experience.",
+  "kodular": "i've used kodular for low-code mobile app development, enabling rapid prototyping and deployment of applications.",
+  "libertarian": "politically, i identify as a libertarian, advocating for individual freedoms and minimal government intervention.",
+  "economic conservative": "i hold economically conservative views, emphasizing fiscal responsibility and market-driven solutions.",
+  "social center-left": "socially, i lean center-left, supporting progressive policies that promote equality and social justice.",
+  "articles": "i've written and been featured in various articles discussing topics like blockchain, decentralization, and bioinformatics.",
+  "decentri.city": "i run decentri.city, where i review decentralized and blockchain-based technologies, sharing insights on the future of distributed systems.",
+  "qwen": "i've worked on integrating the qwen llm into edge devices like raspberry pi zero, ensuring ai is accessible without reliance on cloud infrastructure.",
+  "bestee.ai": "bestee.ai is one of my chatbot projects, designed to be a friendly, offline-capable ai assistant.",
+  "unconnected.ai": "unconnected.ai is a project that focuses on offline-first ai interactions, ensuring privacy and accessibility in low-connectivity environments.",
+  "decentralized ai": "i advocate for decentralized ai systems, exploring ways to reduce dependence on big tech while maintaining privacy and autonomy.",
+  "zero-knowledge proofs": "i use zero-knowledge proofs in projects like debio.network, ensuring users can verify data without revealing sensitive information."
+};
+
+    
+    const topics = Object.keys(responses);
+    
+    function updateSuggestedTopics() {
+      suggestedTopics.innerHTML = "";
+      let shuffledTopics = topics.sort(() => 0.5 - Math.random()).slice(0, 3);
+      shuffledTopics.forEach(topic => {
+        let span = document.createElement("span");
+        span.textContent = topic;
+        span.onclick = () => {
+          userInput.value = topic;
+          userInput.focus();
+        };
+        suggestedTopics.appendChild(span);
+      });
+    }
+    
+    function respondToUser(input) {
+      input = input.toLowerCase();
+      for (const keyword in responses) {
+        if (input.includes(keyword)) {
+          return responses[keyword];
+        }
+      }
+      return "i do not have an answer for that yet... try another keyword, or run a full LLM locally at <a href='https://unconnected.ai/' target='_blank' style='color: #00ff00; text-decoration: underline;'>unconnected.ai</a>!";
+    }
+    
+    userInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter" && userInput.value.trim() !== "") {
+        const userMessage = document.createElement("div");
+        userMessage.textContent = `> ${userInput.value}`;
+        terminal.appendChild(userMessage);
+        terminal.scrollTop = terminal.scrollHeight;
+        
+const botMessage = document.createElement("div");
+botMessage.innerHTML = respondToUser(userInput.value); // Now supports HTML
+terminal.appendChild(botMessage);
+
+        terminal.scrollTop = terminal.scrollHeight;
+        
+        userInput.value = "";
+        updateSuggestedTopics();
+      }
+    });
+    
+    updateSuggestedTopics();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>cyberpunk decentricity</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <!-- google fonts for that futuristic vibe -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      color: #fff; /* default text => white */
+      font-family: 'Orbitron', sans-serif;
+      overflow-y: auto;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* overlay for normal item details */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1rem;
+    }
+    /* container so if user clicks background, it closes, but not if they click inside content box */
+    #overlayContentContainer {
+      position: relative;
+      background: transparent;
+    }
+    .innerContent {
+      max-width: 600px;
+      text-align: left;
+      color: #fff; /* overlay text in white */
+      white-space: pre-wrap;
+      background: #000;
+      padding: 1rem;
+      border: 1px solid #ff40ff; /* pink single-line frame */
+    }
+    /* close button also inside that box */
+    #closeOverlayBtn {
+      border: 1px solid #ff40ff;
+      background: transparent;
+      color: #ff40ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      margin-top: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      display: block;
+    }
+    #closeOverlayBtn:hover {
+      background: #ff40ff;
+      color: #000;
+      box-shadow: 0 0 5px #ff40ff;
+    }
+
+    /* links in the overlay => red (#ff5252) */
+    .innerContent a {
+      color: #ff5252;
+      text-decoration: none;
+    }
+    .innerContent a:hover {
+      text-decoration: underline;
+    }
+
+    /* second overlay for ai.html (iframe) */
+    #overlayAI {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 99999; /* above the normal overlay */
+      padding: 1rem;
+    }
+    #overlayAIContainer {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    #overlayAIIframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #111;
+    }
+    #closeAIBtn {
+      position: absolute;
+      top: 1rem; 
+      right: 1rem;
+      border: 1px solid #ff40ff;
+      background: transparent;
+      color: #ff40ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #closeAIBtn:hover {
+      background: #ff40ff;
+      color: #000;
+      box-shadow: 0 0 5px #ff40ff;
+    }
+
+    #mainContainer {
+      transition: all 0.8s ease;
+      min-width: 320px;
+      max-width: 1280px;
+    }
+
+    /* headings => pink (#ff40ff) */
+    h2 {
+      color: #ff40ff;
+      margin-bottom: 0.5rem;
+    }
+
+    /* stage0 => only title visible, center */
+    .stage0 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .stage0 #title {
+      font-size: 2rem;
+    }
+    .stage0 #whoAmIHeading,
+    .stage0 #whoAmIText,
+    .stage0 #whatIveMadeHeading,
+    .stage0 #whatIveMadeText,
+    .stage0 #projectList,
+    .stage0 #photoContainer {
+      display: none;
+    }
+
+    /* stage1 => title slides up, headings appear, rest hidden */
+    .stage1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .stage1 #title {
+      transform: translateY(-80px);
+      transition: transform 0.5s ease;
+      font-size: 2rem;
+    }
+    .stage1 #whoAmIHeading,
+    .stage1 #whatIveMadeHeading {
+      display: block;
+      margin-top: 1rem;
+    }
+    .stage1 #whoAmIText,
+    .stage1 #whatIveMadeText,
+    .stage1 #projectList,
+    .stage1 #photoContainer {
+      display: none;
+    }
+
+    /* stage2 => 3-col grid, no photo or projectList yet */
+    .stage2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "title whoAmIHeading whoAmIText"
+        ".     whatIveMadeHeading whatIveMadeText";
+      align-items: center;
+      justify-items: center;
+      padding: 1rem;
+      text-align: left;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .stage2 #title {
+      grid-area: title;
+      transform: translateY(0);
+      font-size: 2rem;
+      text-align: center;
+      color: #ff40ff;
+    }
+    .stage2 #whoAmIHeading { grid-area: whoAmIHeading; display: block; }
+    .stage2 #whoAmIText { grid-area: whoAmIText; display: block; }
+    .stage2 #whatIveMadeHeading { grid-area: whatIveMadeHeading; display: block; }
+    .stage2 #whatIveMadeText { grid-area: whatIveMadeText; display: block; }
+    .stage2 #projectList,
+    .stage2 #photoContainer {
+      display: none;
+    }
+
+    /* stage3 => 4-col grid => photo + projectList in last column */
+    .stage3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "title whoAmIHeading whoAmIText photoContainer"
+        ".     whatIveMadeHeading whatIveMadeText projectList";
+      align-items: start;
+      justify-items: start;
+      padding: 1rem;
+      text-align: left;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .stage3 #title {
+      grid-area: title;
+      text-align: left;
+      color: #ff40ff;
+    }
+    .stage3 #whoAmIHeading { grid-area: whoAmIHeading; }
+    .stage3 #whoAmIText { grid-area: whoAmIText; }
+
+    /* container for the photo + new button */
+    .stage3 #photoContainer {
+      grid-area: photoContainer;
+      display: block;
+    }
+    #myPhoto {
+      width: 100%;
+      max-height: auto;
+      display: block;
+    }
+    /* red button => talk to my ai version => loads second overlay */
+    #talkToAIButton {
+      margin-top: 0.5rem;
+      border: 1px solid #ff5252;
+      background: #ff5252; /* red background */
+      color: #fff;         /* white text */
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      width: 100%;
+    }
+    #talkToAIButton:hover {
+      background: #fff;
+      color: #ff5252;
+      box-shadow: 0 0 5px #ff5252;
+    }
+
+    .stage3 #whatIveMadeHeading { grid-area: whatIveMadeHeading; }
+    .stage3 #whatIveMadeText { grid-area: whatIveMadeText; }
+    .stage3 #projectList {
+      grid-area: projectList;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 80vh;
+      margin-left: 1rem;
+    }
+
+    /* glitch effect => pink (#ff40ff) & red (#ff5252) */
+    .glitch {
+      position: relative;
+      display: inline-block;
+      animation: glitch-animation 2s infinite;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      width: 100%;
+      text-align: center;
+    }
+    .glitch::before {
+      text-shadow: 2px 0 #ff40ff;
+      clip: rect(0, 9999px, 30px, 0);
+      animation: glitch-animation-2 2s infinite;
+    }
+    .glitch::after {
+      text-shadow: -2px 0 #ff5252;
+      clip: rect(40px, 9999px, 80px, 0);
+      animation: glitch-animation-3 2s infinite;
+    }
+    @keyframes glitch-animation {
+      0% {transform: translate(0, 0);}
+      20% {transform: translate(-2px, 2px);}
+      40% {transform: translate(-2px, -2px);}
+      60% {transform: translate(2px, 2px);}
+      80% {transform: translate(2px, -2px);}
+      100% {transform: translate(0, 0);}
+    }
+    @keyframes glitch-animation-2 {
+      0% {clip: rect(85px, 9999px, 140px, 0);}
+      20% {clip: rect(0px, 9999px, 20px, 0);}
+      40% {clip: rect(75px, 9999px, 130px, 0);}
+      60% {clip: rect(50px, 9999px, 65px, 0);}
+      80% {clip: rect(0px, 9999px, 20px, 0);}
+      100% {clip: rect(85px, 9999px, 140px, 0);}
+    }
+    @keyframes glitch-animation-3 {
+      0% {clip: rect(45px, 9999px, 56px, 0);}
+      20% {clip: rect(10px, 9999px, 130px, 0);}
+      40% {clip: rect(60px, 9999px, 80px, 0);}
+      60% {clip: rect(10px, 9999px, 130px, 0);}
+      80% {clip: rect(45px, 9999px, 56px, 0);}
+      100% {clip: rect(10px, 9999px, 130px, 0);}
+    }
+
+    /* pink style for the project list buttons */
+    .cyber-btn {
+      border: 1px solid #ff40ff;
+      background: transparent;
+      color: #ff40ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      width: 100%;
+    }
+    .cyber-btn:hover {
+      background: #ff40ff;
+      color: #000;
+      box-shadow: 0 0 5px #ff40ff;
+    }
+
+    /* mobile => stacked layout under 768px */
+    @media (max-width: 768px) {
+      body {
+        align-items: flex-start;
+        height: auto;
+      }
+      .stage2, .stage3 {
+        display: block;
+        height: auto;
+        overflow: visible;
+      }
+      #mainContainer {
+        width: 100%;
+      }
+      #whoAmIText,
+      #whatIveMadeText {
+        max-width: 90%;
+      }
+      #projectList {
+        max-height: none;
+        margin-left: 0;
+      }
+      #photoContainer {
+        max-width: 90%;
+        margin: 0.5rem auto;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- the normal item overlay -->
+  <div id="overlay" onclick="closeOverlay()">
+    <div id="overlayContentContainer" onclick="event.stopPropagation()">
+      <div class="innerContent" id="overlayContent"></div>
+      <button id="closeOverlayBtn" onclick="closeOverlay()">close</button>
+    </div>
+  </div>
+
+  <!-- the new AI overlay with iframe -->
+  <div id="overlayAI">
+    <div id="overlayAIContainer" style="position: relative; width: 100%; height: 100%;">
+      <iframe id="overlayAIIframe" src="" title="talk to my ai" style="width: 100%; height: 100%; border: none; background: #111;"></iframe>
+      <button id="closeAIBtn" style="
+        position: absolute; 
+        top: 1rem; 
+        right: 1rem;
+        border: 1px solid #ff40ff;
+        background: transparent;
+        color: #ff40ff;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+      " onclick="closeAIOverlay()">close</button>
+    </div>
+  </div>
+
+  <div id="mainContainer" class="stage0">
+    <div id="title">welcome to decentricity</div>
+
+    <h2 id="whoAmIHeading">who am i</h2>
+    <div id="whoAmIText">
+      i had a short official stint in ai research circa 2007–2008, then pivoted into blockchain consulting and crypto ventures. i still dabble in ai whenever i can—pushing code at odd hours, chasing that neon horizon. most of my career has been about building decentralized projects and finding fresh frontiers before the rest of the world arrives.
+    </div>
+
+    <h2 id="whatIveMadeHeading">what i’ve made</h2>
+    <div id="whatIveMadeText">
+      first came the ai-based environmental impact system back when “ai” barely registered on the hype radar. then i co-founded blockchain consultancies, helped legalize crypto in indonesia, launched debio.network for privacy-focused biotech data, and myriad.social for free speech. i even set up a metaverse engine at realitychain and occasionally spin up new ai side projects—because once you’ve glimpsed the future, it’s hard to look away.
+    </div>
+
+    <!-- container for the photo and new red button -->
+    <div id="photoContainer">
+      <img id="myPhoto" src="decentricity.gif" alt="photo of me" />
+      <!-- the new red button => opens second overlay with ai.html in iframe -->
+      <button id="talkToAIButton" onclick="openAIOverlay()">
+        talk to my ai version
+      </button>
+    </div>
+
+    <!-- final project list => zero truncation -->
+    <div id="projectList">
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>i created this system at a time when “ai” was still a niche field, and i was fresh out of my official ai researcher role. the core idea was simple but groundbreaking: ask users about their proposed business, then automatically compile an environmental impact assessment. back in 2008, many people dismissed ai as academic or frivolous, but i knew it was the next frontier. this project proved that knowledge-based expert systems could generate high-level regulatory reports, long before mainstream chatter about “machine learning” took over.</p>
+<p>related link:<br>
+<a href='https://digilib.itb.ac.id/gdl/view/8902/' target='_blank'>expert systems for environmental impact assessment at institut teknologi bandung</a>
+</p>
+`)">
+        ai writer expert system for eia (2008) 🤖
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>robotpuisi was my foray into creative ai—an indonesian poetry bot on twitter that went unexpectedly viral. it ended up featured in yahoo news and e27, which blew my mind at the time. i wanted to fuse my love of language and technology into something playful, so i built a script that pulled words from a curated corpus of poetry, then auto-posted them. it was an early indicator that ai-driven chat or content bots could resonate with the public, even if most folks were still skeptical about ai’s viability.</p>
+<p>related link:<br>
+<a href='https://sg.news.yahoo.com/bot-write-indonesian-poem-mention-twitter-115211775.html' target='_blank'>robotpuisi</a>
+</p>
+`)">
+        robotpuisi (2011) 📱🤖
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>this project holds a special place in my heart. with usd 20k in funding from ibm, i helped develop an ai-assisted library system aimed at visually impaired users. i remember focusing on user-friendliness, ensuring that data retrieval was seamless and accessible. mitra netra demonstrated how technology could break down barriers, making knowledge available to everyone, regardless of disability.</p>
+`)">
+        mitra netra library (2016) 📱📖🤖
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>during these years, i immersed myself in ibm’s ecosystem, working with everything from massive mainframes to expert integrated systems and hpc solutions. i was also recognized on the puresystems worldwide top 11 super-seller list, made it onto the ibm csr top worldwide volunteer list, and even got an international third place award in one of our solution challenges. in parallel, i routinely tested new hardware accelerations (back when nvidia gpus were relatively inexpensive) and helped clients optimize data-intensive workflows. that period shaped how i approach large-scale tech deployments, balancing raw performance with enterprise-grade reliability.</p>
+`)">
+        multiple ibm projects (2011–2017) 📂
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>i co-founded blockchain zoo in 2017, when blockchain was still viewed by many as a passing trend. we assembled a team of experts, focusing on creating secure, transparent solutions for businesses. we later got listed in gartner as a recognized blockchain consulting firm, which was a huge milestone. i oversaw everything from consensus mechanism analysis to enterprise architecture, positioning blockchain zoo as a go-to consultancy for decentralized tech.</p>
+<p>related link:<br>
+<a href='https://www.angin.id/2018/05/25/pandu-sastrowardoyo' target='_blank'>blockchain zoo</a>
+</p>
+`)">
+        blockchain zoo (2017) 🏢⛓️
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>launched around the same time as blockchain zoo, blocksphere took a slightly different angle on dlt consulting, pushing more on on-chain governance models and task delegation systems. with blocksphere, i helped clients transition from pilot projects to real-world blockchain implementations, focusing on solutions that could withstand both market volatility and regulatory uncertainties.</p>
+<p>related link:<br>
+<a href='https://blocksphere.id' target='_blank'>blocksphere</a>
+</p>
+`)">
+        blocksphere (2017) 🏢⛓️
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>by 2018, it became clear we needed a unified voice for blockchain in indonesia. so i helped found the indonesian blockchain association to collaborate with government bodies and regulators, pushing for clarity and legal acceptance of crypto. i firmly believed that if we wanted to move from the fringes to mainstream adoption, we needed the right regulatory frameworks in place. we fought hard for rules that would encourage innovation rather than stifle it.</p>
+<p>related link:<br>
+<a href='https://asosiasiblockchain.co.id' target='_blank'>asosiasi blockchain indonesia</a>
+</p>
+`)">
+        asosiasi blockchain indonesia (2018) 👥
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>i saw an opportunity in merging decentralized principles with biomedical data, so i pitched the concept of debio network back in 2018. we ultimately raised usd 3m, and our approach won a un sdg award at ethdenver 2020. debio focuses on privacy-preserving data—particularly for genomic and healthcare-related information. we leverage blockchain and zero-knowledge proofs to let individuals control their own biological data, which feels like a necessary leap for the future of personal health and research collaboration.</p>
+<p>related link:<br>
+<a href='https://debio.network' target='_blank'>debio</a>
+</p>
+`)">
+        debio network (2019) 🏢⛓️🤖
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>with big tech tightening its grip on speech, i launched myriad social as a decentralized, censorship-resistant platform. i secured usd 2.5m in funding to build out a network where users can own their identities, speak freely, and even monetize their content using crypto. we rely on federated servers and blockchain-based identity to ensure no single authority can silence legitimate expression. for me, it was always about empowering voices rather than letting them be drowned out by centralized platforms.</p>
+<p>related link:<br>
+<a href='https://myriad.social' target='_blank'>myriad</a>
+</p>
+`)">
+        myriad social (2020) 🏢⛓️👀
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>if web3 was about decentralized data, the metaverse seemed like the next logical frontier. i raised usd 500k to build realitychain, a metaverse infrastructure that hosted full-scale virtual concerts, including performances by a multi-grammy award-winning artist. weaving together immersive 3d experiences with on-chain ownership, we aimed to show how events and entertainment could be reimagined in virtual worlds that still preserve user autonomy.</p>
+`)">
+        realitychain (2021) 📱👀
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>these two initiatives represent my ongoing fascination with ai—particularly how we can run advanced language models on edge devices. i worked to integrate the qwen llm onto hardware like raspberry pi zero, hoping to democratize ai beyond massive data centers. the idea is to enable localized, user-owned ai processing, so people don’t have to rely solely on cloud services. i see it as a crucial step toward privacy and decentralized intelligence.</p>
+<p>related link:<br>
+<a href='https://unconnected.ai' target='_blank'>unconnected.ai</a>
+</p>
+`)">
+        unconnected.ai & bestee.ai (2024)
+      </button>
+
+      <button class="cyber-btn" onclick="showOverlayHTML(`
+<p>i currently serve as both executive producer and host for bloomberg technozone. inspired by a cyberpunk vision of future tech, i highlight emerging innovations in ai, blockchain, biotech, and beyond. it’s a platform where i can bring together entrepreneurs, technologists, and thought leaders to discuss how these cutting-edge advances might reshape society. i believe it’s important to remain ahead of the curve—because if we only follow trends, we’re already too late.</p>
+<p>related link:<br>
+<a href='https://www.bloombergtechnoz.com/technozone' target='_blank'>bloomberg technozone</a>
+</p>
+`)">
+        bloomberg technozone (2024) 📺
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // stage transitions
+    setTimeout(() => {
+      const container = document.getElementById('mainContainer');
+      container.classList.remove('stage0');
+      container.classList.add('stage1');
+    }, 500);
+
+    setTimeout(() => {
+      const title = document.getElementById('title');
+      title.classList.add('glitch');
+      title.setAttribute('data-text', title.innerText);
+    }, 700);
+
+    setTimeout(() => {
+      const container = document.getElementById('mainContainer');
+      container.classList.remove('stage1');
+      container.classList.add('stage2');
+    }, 1000);
+
+    setTimeout(() => {
+      const container = document.getElementById('mainContainer');
+      container.classList.remove('stage2');
+      container.classList.add('stage3');
+    }, 3000);
+
+    // overlay for normal items
+    function showOverlayHTML(html) {
+      document.getElementById('overlayContent').innerHTML = html;
+      document.getElementById('overlay').style.display = 'flex';
+    }
+    function closeOverlay() {
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    // second overlay => loads ai.html in iframe
+    function openAIOverlay() {
+      document.getElementById('overlayAIIframe').src = 'ai.html';
+      document.getElementById('overlayAI').style.display = 'block';
+    }
+    function closeAIOverlay() {
+      document.getElementById('overlayAIIframe').src = '';
+      document.getElementById('overlayAI').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+
