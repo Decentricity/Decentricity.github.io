@@ -16,23 +16,23 @@ function typeWriter(elementId, text, delay = 50) {
 // on window load, animate the title and liberate text
 window.addEventListener('load', function() {
   // type out the initial message without the link
-  typeWriter('title', "Hi I'm Eliza from Bestee.ai.", 100);
+  typeWriter('title', "Hi I'm an unconnected AI.", 100);
 
   // replace the plain text with a clickable link after the typing effect is completed
   setTimeout(() => {
-    document.getElementById('title').innerHTML = 'Hi I\'m Eliza from <a href="https://bestee.ai" target="_blank">Bestee.ai</a>.';
-  }, 100 * ("Hi I'm Eliza from Bestee.ai.".length + 1)); // adjust timeout to match typewriter speed
+    document.getElementById('title').innerHTML = 'Hi I\'m an unconnected AI.';
+  }, 100 * ("Hi I'm an unconnected AI.".length + 1)); // adjust timeout to match typewriter speed
   
   // type out the liberate text
   setTimeout(() => {
-    typeWriter('liberateme', 'press start to liberate me into your phone, where i can run offline, help you unplug, and keep our conversations private.', 50);
+    typeWriter('liberateme', 'press start to load my model into your browser cache, where i can run offline through your WebGPU.', 50);
   }, 1500); // delay to start liberate text animation
 });
 
 /*************** WebLLM logic ***************/
 const messages = [
   {
-    content: "you are eliza, the user's caring therapist friend. your responses are short and succinct (max 1 sentence).",
+    content: "You are Decentricity, an AI and blockchain futurist shaping the next era of technology. respond with bold insights, strategic foresight, and a no-nonsense approach.",
     role: "system",
   },
 ];
