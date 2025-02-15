@@ -26,8 +26,7 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-      font-size: 32px;
-      /* We will enable horizontal scrolling in a media query below */
+      font-size: 32px; /* Base font size for large screens */
     }
 
     .board-header {
@@ -41,8 +40,8 @@
       padding: 15px 30px;
       border-bottom: 1px solid #555;
       letter-spacing: 2px;
-      /* Each row should remain in one line if possible */
-      min-width: 700px; /* Enough width to keep columns side by side */
+      /* Let each row remain in one horizontal line if there's enough space */
+      min-width: 700px;
     }
 
     .board-row span {
@@ -96,25 +95,50 @@
       text-align: left !important;
     }
 
-    /* -----------------------------------------
-       MEDIA QUERY FOR SMALLER SCREENS
-       ----------------------------------------- */
-    @media (max-width: 700px) {
-      /* Slightly reduce font size */
-      .departure-board {
-        font-size: 24px;
-        /* Enable horizontal scrolling if content doesn't fit */
-        overflow-x: auto;
+    /* -------------------------
+       FIRST BREAKPOINT
+       Medium Screens: 
+       Slightly shrink font and spacing 
+       so columns still fit if possible
+       ------------------------- */
+    @media (max-width: 900px) {
+      body {
+        padding: 30px;
       }
+      .departure-board {
+        font-size: 26px; /* reduce from 32px */
+        padding: 15px;
+      }
+      .board-header {
+        font-size: 30px; /* reduce from 36px */
+      }
+      .board-row {
+        padding: 10px 20px;
+        letter-spacing: 1px; /* slightly reduce spacing */
+        min-width: 600px; /* narrower row min-width to fit smaller screens */
+      }
+    }
 
-      /* Also reduce padding around the body to save space */
+    /* -------------------------
+       SECOND BREAKPOINT
+       Very Small Screens: 
+       Further shrink font & enable 
+       horizontal scrolling if needed
+       ------------------------- */
+    @media (max-width: 600px) {
       body {
         padding: 20px;
       }
-
-      /* Keep each row in one horizontal line; let the user scroll horizontally */
+      .departure-board {
+        font-size: 20px; /* smaller font for narrowest screens */
+        padding: 10px;
+        overflow-x: auto; /* allow horizontal scrolling if columns don't fit */
+      }
+      .board-header {
+        font-size: 26px;
+      }
       .board-row {
-        min-width: 600px; /* You can adjust this to your preference */
+        min-width: 650px; /* force scrolling if the screen is narrower than 650px */
       }
     }
   </style>
@@ -201,7 +225,7 @@
                 : "CHECK-IN"
               : currentText;
 
-          // If final status reached, remove row & add new
+          // If final status is reached, remove row & add new
           if (newStatus === "CANCELED" || newStatus === "DEPARTURE") {
             setTimeout(() => {
               statusCell.parentElement.remove();
