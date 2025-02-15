@@ -1,176 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Departure - Aryorespati Xavier Sastrowardoyo</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: 'VT323', monospace;
-            text-align: center;
-            padding: 50px;
-        }
-        .departure-board {
-            display: block;
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-            font-size: 32px;
-        }
-        .board-header {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        .board-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 30px;
-            border-bottom: 1px solid #555;
-            letter-spacing: 2px;
-        }
-        .board-row span {
-            text-align: left;
-            flex: 1;
-        }
-        .board-row .status {
-            text-align: right;
-            flex: 1;
-        }
-        .board-row.fake {
-            background-color: darkblue;
-            cursor: pointer;
-        }
-        .status {
-            color: yellow;
-        }
-        .status.delayed {
-            color: red;
-        }
-        .status.canceled {
-            color: red;
-        }
-        .status.open {
-            color: green;
-        }
-        .status.boarding {
-            color: orange;
-        }
-        .status.checkin {
-            color: cyan;
-        }
-        .status.departure {
-            color: lightblue;
-        }
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        .typewriter {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 3px solid yellow;
-            animation: typewriter 1s steps(10, end) forwards;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Departure - Aryorespati Xavier Sastrowardoyo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: "VT323", monospace;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .departure-board {
+      display: block;
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+      font-size: 32px;
+      /* We will enable horizontal scrolling in a media query below */
+    }
+
+    .board-header {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .board-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      border-bottom: 1px solid #555;
+      letter-spacing: 2px;
+      /* Each row should remain in one line if possible */
+      min-width: 700px; /* Enough width to keep columns side by side */
+    }
+
+    .board-row span {
+      flex: 1;
+      text-align: left;
+    }
+
+    .board-row.fake {
+      background-color: darkblue;
+      cursor: pointer;
+    }
+
+    /* Status text colors */
+    .status {
+      color: yellow;
+    }
+    .status.delayed {
+      color: red;
+    }
+    .status.canceled {
+      color: red;
+    }
+    .status.open {
+      color: green;
+    }
+    .status.boarding {
+      color: orange;
+    }
+    .status.checkin {
+      color: cyan;
+    }
+    .status.departure {
+      color: lightblue;
+    }
+
+    /* Typewriter animation */
+    @keyframes typewriter {
+      0% {
+        max-width: 0;
+      }
+      100% {
+        max-width: 100%;
+      }
+    }
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid yellow;
+      animation: typewriter 2s steps(20, end) forwards;
+      text-align: left !important;
+    }
+
+    /* -----------------------------------------
+       MEDIA QUERY FOR SMALLER SCREENS
+       ----------------------------------------- */
+    @media (max-width: 700px) {
+      /* Slightly reduce font size */
+      .departure-board {
+        font-size: 24px;
+        /* Enable horizontal scrolling if content doesn't fit */
+        overflow-x: auto;
+      }
+
+      /* Also reduce padding around the body to save space */
+      body {
+        padding: 20px;
+      }
+
+      /* Keep each row in one horizontal line; let the user scroll horizontally */
+      .board-row {
+        min-width: 600px; /* You can adjust this to your preference */
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>DEPARTURE</h1>
-    <h2>Aryorespati</h2>
-    <div class="departure-board">
-        <div class="board-header">Departures</div>
-        <div id="board-content"></div>
-    </div>
-    <script>
-        const destinations = ["Jakarta", "Delft", "New York", "Paris", "Tokyo", "Dubai", "Amsterdam", "Berlin", "Sydney", "Rome", "Spotify", "Apple Music", "Instagram"];
-        const gates = ["A1", "B2", "C3", "D4", "E5", "F6", "G7", "H8", "I9", "J10"];
-        const statuses = ["ON TIME", "CHECK-IN", "BOARDING", "DEPARTURE", "DELAYED", "CANCELED"];
-        const airlines = ["GA", "KL", "AF", "BA", "SQ", "LH", "EK", "QR", "CX", "AA"];
-        const destinationLinks = {
-            "Spotify": "https://open.spotify.com/track/5CPGzbFyIUsEnwq71jDQs4?si=dCrFum2ITk24oNzS3N3_vg&context=spotify%3Aalbum%3A1ovj44TIeuLD2sdg3PAq4d",
-            "Apple Music": "https://music.apple.com/id/album/departure/1795314764?i=1795314920",
-            "Instagram": "https://instagram.com/aryorespatixavier"
-        };
-        
-        function randomItem(array) {
-            return array[Math.floor(Math.random() * array.length)];
+  <h1>DEPARTURE</h1>
+  <h2>Aryorespati</h2>
+  <div class="departure-board">
+    <div class="board-header">Departures</div>
+    <div id="board-content"></div>
+  </div>
+  <script>
+    const destinations = [
+      "Jakarta",
+      "Delft",
+      "New York",
+      "Paris",
+      "Tokyo",
+      "Dubai",
+      "Amsterdam",
+      "Berlin",
+      "Sydney",
+      "Rome",
+      "Spotify",
+      "Apple Music",
+      "Instagram",
+    ];
+    const gates = ["A1", "B2", "C3", "D4", "E5", "F6", "G7", "H8", "I9", "J10"];
+    const statuses = [
+      "ON TIME",
+      "CHECK-IN",
+      "BOARDING",
+      "DEPARTURE",
+      "DELAYED",
+      "CANCELED",
+    ];
+    const airlines = ["GA", "KL", "AF", "BA", "SQ", "LH", "EK", "QR", "CX", "AA"];
+    const destinationLinks = {
+      Spotify:
+        "https://open.spotify.com/track/5CPGzbFyIUsEnwq71jDQs4?si=dCrFum2ITk24oNzS3N3_vg&context=spotify%3Aalbum%3A1ovj44TIeuLD2sdg3PAq4d",
+      "Apple Music":
+        "https://music.apple.com/id/album/departure/1795314764?i=1795314920",
+      Instagram: "https://instagram.com/aryorespatixavier",
+    };
+
+    function randomItem(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function generateFlightNumber() {
+      return randomItem(airlines) + "-" + Math.floor(100 + Math.random() * 900);
+    }
+
+    function generateRow(index) {
+      let destination = randomItem(destinations);
+      return {
+        time: `${18 - Math.floor(index / 2)}:${
+          index % 2 === 0 ? "30" : "00"
+        }`,
+        destination: destination,
+        flightNumber: generateFlightNumber(),
+        gate: randomItem(gates),
+        status: "ON TIME",
+        link: destinationLinks[destination] || null,
+      };
+    }
+
+    function updateBoard() {
+      const rows = document.querySelectorAll(".board-row .status");
+      rows.forEach((statusCell, index) => {
+        let probability = (15 - index) * 0.07;
+        if (Math.random() < probability) {
+          let currentText = statusCell.textContent.trim();
+          let newStatus =
+            currentText === "ON TIME"
+              ? "CHECK-IN"
+              : currentText === "CHECK-IN"
+              ? "BOARDING"
+              : currentText === "BOARDING"
+              ? "DEPARTURE"
+              : currentText === "DELAYED"
+              ? Math.random() < 0.5
+                ? "CANCELED"
+                : "CHECK-IN"
+              : currentText;
+
+          // If final status reached, remove row & add new
+          if (newStatus === "CANCELED" || newStatus === "DEPARTURE") {
+            setTimeout(() => {
+              statusCell.parentElement.remove();
+              addNewRow();
+            }, 1000);
+          }
+
+          let newStatusClass = newStatus.toLowerCase().replace(" ", "");
+          statusCell.className = `status ${newStatusClass}`;
+          statusCell.innerHTML = `<span class="typewriter">${newStatus}</span>`;
         }
-        
-        function generateFlightNumber() {
-            return randomItem(airlines) + "-" + Math.floor(100 + Math.random() * 900);
+      });
+    }
+
+    function addNewRow() {
+      const boardContent = document.getElementById("board-content");
+      let newFlight = generateRow(14);
+      let row = document.createElement("div");
+      row.classList.add("board-row");
+
+      if (newFlight.link) {
+        row.classList.add("fake");
+        row.onclick = () => window.open(newFlight.link, "_blank");
+      }
+
+      let statusClass = newFlight.status.toLowerCase().replace(" ", "");
+      row.innerHTML = `
+        <span>${newFlight.time}</span>
+        <span>${newFlight.destination}</span>
+        <span>${newFlight.flightNumber}</span>
+        <span>${newFlight.gate}</span>
+        <span class="status ${statusClass}">
+          <span class="typewriter">${newFlight.status}</span>
+        </span>
+      `;
+      boardContent.appendChild(row);
+    }
+
+    function generateBoardRows() {
+      const boardContent = document.getElementById("board-content");
+      boardContent.innerHTML = "";
+      for (let i = 0; i < 15; i++) {
+        let flight = generateRow(i);
+        let row = document.createElement("div");
+        row.classList.add("board-row");
+
+        if (flight.link) {
+          row.classList.add("fake");
+          row.onclick = () => window.open(flight.link, "_blank");
         }
-        
-        function generateRow(index) {
-            let destination = randomItem(destinations);
-            return {
-                time: `${18 - Math.floor(index / 2)}:${index % 2 === 0 ? "30" : "00"}`,
-                destination: destination,
-                flightNumber: generateFlightNumber(),
-                gate: randomItem(gates),
-                status: "ON TIME",
-                link: destinationLinks[destination] || null
-            };
-        }
-        
-        function updateBoard() {
-            const rows = document.querySelectorAll(".board-row .status");
-            rows.forEach((statusCell, index) => {
-                let probability = (15 - index) * 0.07;
-                if (Math.random() < probability) {
-                    let newStatus = statusCell.textContent === "ON TIME" ? "CHECK-IN" :
-                                    statusCell.textContent === "CHECK-IN" ? "BOARDING" :
-                                    statusCell.textContent === "BOARDING" ? "DEPARTURE" :
-                                    statusCell.textContent === "DELAYED" ? (Math.random() < 0.5 ? "CANCELED" : "CHECK-IN") : statusCell.textContent;
-                    if (newStatus === "CANCELED" || newStatus === "DEPARTURE") {
-                        setTimeout(() => {
-                            statusCell.parentElement.remove();
-                            addNewRow();
-                        }, 1000);
-                    }
-                    statusCell.textContent = newStatus;
-                    statusCell.className = `status ${newStatus.toLowerCase().replace(" ", "")}`;
-                }
-            });
-        }
-        
-        function addNewRow() {
-            const boardContent = document.getElementById("board-content");
-            let newFlight = generateRow(14);
-            let row = document.createElement("div");
-            row.classList.add("board-row");
-            if (newFlight.link) {
-                row.classList.add("fake");
-                row.onclick = () => window.open(newFlight.link, "_blank");
-            }
-            row.innerHTML = `<span>${newFlight.time}</span><span>${newFlight.destination}</span><span>${newFlight.flightNumber}</span><span>${newFlight.gate}</span><span class="status">${newFlight.status}</span>`;
-            boardContent.appendChild(row);
-        }
-        
-        function generateBoardRows() {
-            const boardContent = document.getElementById("board-content");
-            boardContent.innerHTML = "";
-            for (let i = 0; i < 15; i++) {
-                let flight = generateRow(i);
-                let row = document.createElement("div");
-                row.classList.add("board-row");
-                if (flight.link) {
-                    row.classList.add("fake");
-                    row.onclick = () => window.open(flight.link, "_blank");
-                }
-                row.innerHTML = `<span>${flight.time}</span><span>${flight.destination}</span><span>${flight.flightNumber}</span><span>${flight.gate}</span><span class="status">${flight.status}</span>`;
-                boardContent.appendChild(row);
-            }
-        }
-        
-        generateBoardRows();
-        setInterval(updateBoard, 5000);
-    </script>
+
+        let statusClass = flight.status.toLowerCase().replace(" ", "");
+        row.innerHTML = `
+          <span>${flight.time}</span>
+          <span>${flight.destination}</span>
+          <span>${flight.flightNumber}</span>
+          <span>${flight.gate}</span>
+          <span class="status ${statusClass}">
+            <span class="typewriter">${flight.status}</span>
+          </span>
+        `;
+        boardContent.appendChild(row);
+      }
+    }
+
+    generateBoardRows();
+    setInterval(updateBoard, 5000);
+  </script>
 </body>
 </html>
