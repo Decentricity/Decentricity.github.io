@@ -34,25 +34,40 @@
       margin-bottom: 20px;
     }
 
+    /* 
+      We switch to a grid-based layout to ensure columns line up consistently:
+        1) Time column (fixed width ~80px)
+        2) Destination column (2fr)
+        3) Flight number column (1fr)
+        4) Gate column (fixed width ~60px)
+        5) Status column (1fr)
+    */
     .board-row {
-      display: flex;
-      flex-wrap: nowrap;   /* Prevent wrapping */
-      white-space: nowrap; /* Keep columns in one line */
-      justify-content: space-between;
-      padding: 10px 20px;  /* Base spacing between columns */
-      letter-spacing: 1px;
+      display: grid;
+      grid-template-columns: 80px 2fr 1fr 60px 1fr;
+      column-gap: 10px;        /* Spacing between columns */
+      align-items: center;     /* Vertically center content */
+      padding: 10px 20px;      /* Row padding */
+      letter-spacing: 1px;     /* Slight spacing for a retro look */
       border-bottom: 1px solid #555;
-      min-width: 700px;    /* Enough width for large screens */
     }
 
-    .board-row span {
-      flex: 0 0 auto;
-      text-align: left;
-    }
+    /* If you want a minimum width for the entire row to preserve layout:
+       .board-row {
+         min-width: 700px;
+         ...
+       }
+       But with grid, each column is strictly sized, so this is optional. */
 
     .board-row.fake {
       background-color: darkblue;
       cursor: pointer;
+    }
+
+    /* The <span> elements within each grid cell */
+    .board-row span {
+      text-align: left;
+      /* We do not force flex: or white-space: here; the grid handles alignment */
     }
 
     /* Status text colors */
@@ -108,48 +123,51 @@
       text-align: left !important;
     }
 
-    /* ------------------------------------------------------
-       1) Shrink column gaps first at narrower widths (<900px)
-       ------------------------------------------------------ */
+    /* 
+      MEDIA QUERIES 
+      1) Shrink column gaps first at narrower widths (<900px)
+      2) Reduce font size at medium-small widths (<700px)
+      3) Enable horizontal scrolling on very small screens (<600px)
+    */
+
     @media (max-width: 900px) {
       .board-row {
-        padding: 5px 10px; /* Less padding => narrower columns */
-        letter-spacing: 0.5px; /* Tighter spacing */
-        min-width: 650px;
+        column-gap: 5px;       /* Slightly tighter columns */
+        padding: 5px 10px;     /* Less row padding */
       }
     }
 
-    /* ------------------------------------------------------
-       2) Reduce font size at medium-small widths (<700px)
-       ------------------------------------------------------ */
     @media (max-width: 700px) {
       .departure-board {
-        font-size: 26px; /* reduce from 32px */
+        font-size: 26px;       /* reduce from 32px */
         padding: 15px;
       }
       .board-header {
-        font-size: 30px; /* reduce from 36px */
+        font-size: 30px;       /* reduce from 36px */
       }
     }
 
-    /* ------------------------------------------------------
-       3) Enable horizontal scrolling on very small screens (<600px)
-       ------------------------------------------------------ */
     @media (max-width: 600px) {
       body {
         padding: 20px;
       }
       .departure-board {
-        font-size: 20px; /* smaller font for narrowest screens */
+        font-size: 20px;       /* smaller font for narrowest screens */
         padding: 10px;
-        overflow-x: auto; /* horizontal scroll if columns don't fit */
+        overflow-x: auto;      /* horizontal scroll if columns don't fit */
       }
       .board-header {
         font-size: 26px;
       }
-      .board-row {
-        min-width: 600px; /* Force scroll if narrower than 600px */
-      }
+      /* 
+        If the board is narrower than ~580-600px, columns won't fit side by side,
+        so horizontal scrolling is enabled. You can also set a min-width on .board-row 
+        if you like:
+        
+        .board-row {
+          min-width: 600px;
+        }
+      */
     }
   </style>
 </head>
@@ -177,15 +195,22 @@
       "Instagram",
     ];
     const gates = ["A1", "B2", "C3", "D4", "E5", "F6", "G7", "H8", "I9", "J10"];
+    const airlines = ["GA", "KL", "AF", "BA", "SQ", "LH", "EK", "QR", "CX", "AA"];
+
+    // For initial rows, we exclude "DEPARTURE" from possible statuses
+    const initialStatuses = ["ON TIME", "CHECK-IN", "BOARDING", "DELAYED", "CANCELED"];
+
+    // For updates, we still consider these statuses, including "DEPARTURE"
+    // in the random transitions
     const statuses = [
       "ON TIME",
       "CHECK-IN",
       "BOARDING",
+      "DEPARTURE",
       "DELAYED",
       "CANCELED",
-      /* "DEPARTURE" excluded from initial set below */
     ];
-    const airlines = ["GA", "KL", "AF", "BA", "SQ", "LH", "EK", "QR", "CX", "AA"];
+
     const destinationLinks = {
       Spotify:
         "https://open.spotify.com/track/5CPGzbFyIUsEnwq71jDQs4?si=dCrFum2ITk24oNzS3N3_vg&context=spotify%3Aalbum%3A1ovj44TIeuLD2sdg3PAq4d",
@@ -193,9 +218,6 @@
         "https://music.apple.com/id/album/departure/1795314764?i=1795314920",
       Instagram: "https://instagram.com/aryorespatixavier",
     };
-
-    // For initial rows, we exclude "DEPARTURE"
-    const initialStatuses = ["ON TIME", "CHECK-IN", "BOARDING", "DELAYED", "CANCELED"];
 
     /**
      * Returns a random item from an array
@@ -271,7 +293,7 @@
           if (newStatus === "CANCELED" || newStatus === "DEPARTURE") {
             setTimeout(() => {
               statusCell.parentElement.remove();
-              addNewRow(); // New row => always "ON TIME"
+              addNewRow(); // new row => always "ON TIME"
             }, 1000);
           }
 
