@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Departure - Aryorespati Xavier Sastrowardoyo</title>
   <link
     href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
@@ -36,16 +36,17 @@
 
     .board-row {
       display: flex;
+      flex-wrap: nowrap;   /* Prevent wrapping */
+      white-space: nowrap; /* Keep columns in one line */
       justify-content: space-between;
-      padding: 15px 30px;
+      padding: 10px 20px;  /* Base spacing between columns */
+      letter-spacing: 1px;
       border-bottom: 1px solid #555;
-      letter-spacing: 2px;
-      /* Let each row remain in one horizontal line if there's enough space */
-      min-width: 700px;
+      min-width: 700px;    /* Enough width for large screens */
     }
 
     .board-row span {
-      flex: 1;
+      flex: 0 0 auto;
       text-align: left;
     }
 
@@ -77,7 +78,7 @@
       color: lightblue;
     }
 
-    /* Typewriter animation */
+    /* Typewriter animation keyframes */
     @keyframes typewriter {
       0% {
         max-width: 0;
@@ -86,6 +87,8 @@
         max-width: 100%;
       }
     }
+
+    /* Classic typewriter with the yellow cursor (vertical bar) */
     .typewriter {
       display: inline-block;
       overflow: hidden;
@@ -95,16 +98,31 @@
       text-align: left !important;
     }
 
-    /* -------------------------
-       FIRST BREAKPOINT
-       Medium Screens: 
-       Slightly shrink font and spacing 
-       so columns still fit if possible
-       ------------------------- */
+    /* Typewriter animation WITHOUT the yellow cursor */
+    .typewriter-no-cursor {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: none; /* No cursor */
+      animation: typewriter 2s steps(20, end) forwards;
+      text-align: left !important;
+    }
+
+    /* ------------------------------------------------------
+       1) Shrink column gaps first at narrower widths (<900px)
+       ------------------------------------------------------ */
     @media (max-width: 900px) {
-      body {
-        padding: 30px;
+      .board-row {
+        padding: 5px 10px; /* Less padding => narrower columns */
+        letter-spacing: 0.5px; /* Tighter spacing */
+        min-width: 650px;
       }
+    }
+
+    /* ------------------------------------------------------
+       2) Reduce font size at medium-small widths (<700px)
+       ------------------------------------------------------ */
+    @media (max-width: 700px) {
       .departure-board {
         font-size: 26px; /* reduce from 32px */
         padding: 15px;
@@ -112,19 +130,11 @@
       .board-header {
         font-size: 30px; /* reduce from 36px */
       }
-      .board-row {
-        padding: 10px 20px;
-        letter-spacing: 1px; /* slightly reduce spacing */
-        min-width: 600px; /* narrower row min-width to fit smaller screens */
-      }
     }
 
-    /* -------------------------
-       SECOND BREAKPOINT
-       Very Small Screens: 
-       Further shrink font & enable 
-       horizontal scrolling if needed
-       ------------------------- */
+    /* ------------------------------------------------------
+       3) Enable horizontal scrolling on very small screens (<600px)
+       ------------------------------------------------------ */
     @media (max-width: 600px) {
       body {
         padding: 20px;
@@ -132,13 +142,13 @@
       .departure-board {
         font-size: 20px; /* smaller font for narrowest screens */
         padding: 10px;
-        overflow-x: auto; /* allow horizontal scrolling if columns don't fit */
+        overflow-x: auto; /* horizontal scroll if columns don't fit */
       }
       .board-header {
         font-size: 26px;
       }
       .board-row {
-        min-width: 650px; /* force scrolling if the screen is narrower than 650px */
+        min-width: 600px; /* Force scroll if narrower than 600px */
       }
     }
   </style>
@@ -171,9 +181,9 @@
       "ON TIME",
       "CHECK-IN",
       "BOARDING",
-      "DEPARTURE",
       "DELAYED",
       "CANCELED",
+      /* "DEPARTURE" excluded from initial set below */
     ];
     const airlines = ["GA", "KL", "AF", "BA", "SQ", "LH", "EK", "QR", "CX", "AA"];
     const destinationLinks = {
@@ -184,6 +194,9 @@
       Instagram: "https://instagram.com/aryorespatixavier",
     };
 
+    // For initial rows, we exclude "DEPARTURE"
+    const initialStatuses = ["ON TIME", "CHECK-IN", "BOARDING", "DELAYED", "CANCELED"];
+
     /**
      * Returns a random item from an array
      */
@@ -192,7 +205,7 @@
     }
 
     /**
-     * Generates a random flight number, e.g., "KL-385"
+     * Generates a random flight number, e.g. "KL-385"
      */
     function generateFlightNumber() {
       return randomItem(airlines) + "-" + Math.floor(100 + Math.random() * 900);
@@ -209,16 +222,25 @@
     }
 
     /**
-     * Generates a single flight row object, using real time for "time"
+     * Generates a single flight row object
+     * @param {boolean} isInitial - whether this is for initial board load
      */
-    function generateRow() {
+    function generateRow(isInitial = false) {
       const destination = randomItem(destinations);
+      let flightStatus = "ON TIME";
+
+      // If it's for the initial load, choose any status except "DEPARTURE"
+      // If not, default to "ON TIME"
+      if (isInitial) {
+        flightStatus = randomItem(initialStatuses);
+      }
+
       return {
-        time: getCurrentTime(), // Real-world current time
+        time: getCurrentTime(),
         destination: destination,
         flightNumber: generateFlightNumber(),
         gate: randomItem(gates),
-        status: "ON TIME",
+        status: flightStatus,
         link: destinationLinks[destination] || null,
       };
     }
@@ -245,15 +267,14 @@
                 : "CHECK-IN"
               : currentText;
 
-          // If final status is reached, remove row & add new row
+          // If final status is reached, remove row & add new
           if (newStatus === "CANCELED" || newStatus === "DEPARTURE") {
             setTimeout(() => {
               statusCell.parentElement.remove();
-              addNewRow();
+              addNewRow(); // New row => always "ON TIME"
             }, 1000);
           }
 
-          // Update the status cell with new text and classes
           let newStatusClass = newStatus.toLowerCase().replace(" ", "");
           statusCell.className = `status ${newStatusClass}`;
           statusCell.innerHTML = `<span class="typewriter">${newStatus}</span>`;
@@ -263,10 +284,11 @@
 
     /**
      * Adds a new row to the bottom of the board
+     * - new rows are always "ON TIME"
      */
     function addNewRow() {
       const boardContent = document.getElementById("board-content");
-      let newFlight = generateRow();
+      let newFlight = generateRow(false); // not initial => "ON TIME"
       let row = document.createElement("div");
       row.classList.add("board-row");
 
@@ -277,10 +299,10 @@
 
       let statusClass = newFlight.status.toLowerCase().replace(" ", "");
       row.innerHTML = `
-        <span>${newFlight.time}</span>
-        <span>${newFlight.destination}</span>
-        <span>${newFlight.flightNumber}</span>
-        <span>${newFlight.gate}</span>
+        <span class="typewriter">${newFlight.time}</span>
+        <span class="typewriter-no-cursor">${newFlight.destination}</span>
+        <span class="typewriter-no-cursor">${newFlight.flightNumber}</span>
+        <span class="typewriter-no-cursor">${newFlight.gate}</span>
         <span class="status ${statusClass}">
           <span class="typewriter">${newFlight.status}</span>
         </span>
@@ -290,12 +312,13 @@
 
     /**
      * Generates the initial 15 rows
+     * - statuses can be anything except "DEPARTURE"
      */
     function generateBoardRows() {
       const boardContent = document.getElementById("board-content");
       boardContent.innerHTML = "";
       for (let i = 0; i < 15; i++) {
-        let flight = generateRow();
+        let flight = generateRow(true); // isInitial = true
         let row = document.createElement("div");
         row.classList.add("board-row");
 
@@ -306,10 +329,10 @@
 
         let statusClass = flight.status.toLowerCase().replace(" ", "");
         row.innerHTML = `
-          <span>${flight.time}</span>
-          <span>${flight.destination}</span>
-          <span>${flight.flightNumber}</span>
-          <span>${flight.gate}</span>
+          <span class="typewriter">${flight.time}</span>
+          <span class="typewriter-no-cursor">${flight.destination}</span>
+          <span class="typewriter-no-cursor">${flight.flightNumber}</span>
+          <span class="typewriter-no-cursor">${flight.gate}</span>
           <span class="status ${statusClass}">
             <span class="typewriter">${flight.status}</span>
           </span>
