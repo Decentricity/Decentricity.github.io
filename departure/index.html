@@ -184,20 +184,37 @@
       Instagram: "https://instagram.com/aryorespatixavier",
     };
 
+    /**
+     * Returns a random item from an array
+     */
     function randomItem(array) {
       return array[Math.floor(Math.random() * array.length)];
     }
 
+    /**
+     * Generates a random flight number, e.g., "KL-385"
+     */
     function generateFlightNumber() {
       return randomItem(airlines) + "-" + Math.floor(100 + Math.random() * 900);
     }
 
-    function generateRow(index) {
-      let destination = randomItem(destinations);
+    /**
+     * Returns the current time in 24-hour HH:MM format
+     */
+    function getCurrentTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      return `${hours}:${minutes}`;
+    }
+
+    /**
+     * Generates a single flight row object, using real time for "time"
+     */
+    function generateRow() {
+      const destination = randomItem(destinations);
       return {
-        time: `${18 - Math.floor(index / 2)}:${
-          index % 2 === 0 ? "30" : "00"
-        }`,
+        time: getCurrentTime(), // Real-world current time
         destination: destination,
         flightNumber: generateFlightNumber(),
         gate: randomItem(gates),
@@ -206,6 +223,9 @@
       };
     }
 
+    /**
+     * Randomly updates statuses every 5 seconds
+     */
     function updateBoard() {
       const rows = document.querySelectorAll(".board-row .status");
       rows.forEach((statusCell, index) => {
@@ -225,7 +245,7 @@
                 : "CHECK-IN"
               : currentText;
 
-          // If final status is reached, remove row & add new
+          // If final status is reached, remove row & add new row
           if (newStatus === "CANCELED" || newStatus === "DEPARTURE") {
             setTimeout(() => {
               statusCell.parentElement.remove();
@@ -233,6 +253,7 @@
             }, 1000);
           }
 
+          // Update the status cell with new text and classes
           let newStatusClass = newStatus.toLowerCase().replace(" ", "");
           statusCell.className = `status ${newStatusClass}`;
           statusCell.innerHTML = `<span class="typewriter">${newStatus}</span>`;
@@ -240,9 +261,12 @@
       });
     }
 
+    /**
+     * Adds a new row to the bottom of the board
+     */
     function addNewRow() {
       const boardContent = document.getElementById("board-content");
-      let newFlight = generateRow(14);
+      let newFlight = generateRow();
       let row = document.createElement("div");
       row.classList.add("board-row");
 
@@ -264,11 +288,14 @@
       boardContent.appendChild(row);
     }
 
+    /**
+     * Generates the initial 15 rows
+     */
     function generateBoardRows() {
       const boardContent = document.getElementById("board-content");
       boardContent.innerHTML = "";
       for (let i = 0; i < 15; i++) {
-        let flight = generateRow(i);
+        let flight = generateRow();
         let row = document.createElement("div");
         row.classList.add("board-row");
 
@@ -291,7 +318,9 @@
       }
     }
 
+    // Initial population
     generateBoardRows();
+    // Update the board statuses every 5 seconds
     setInterval(updateBoard, 5000);
   </script>
 </body>
