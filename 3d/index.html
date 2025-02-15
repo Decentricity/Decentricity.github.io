@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>3d text planes - bigger camera distance & 3d random distribution</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- single js file: three.min.js (with orbit controls included) -->
+    <script src="three.min.js"></script>
+    <script>
+      let scene, camera, renderer, controls;
+      let planes = [];
+      let focusedPlane = null;
+      let isSceneRotating = true;
+      const raycaster = new THREE.Raycaster();
+      const pointer = new THREE.Vector2();
+      let originalCamPos;
+      const originalTarget = new THREE.Vector3(0, 0, 0);
+
+      // your entire data object
+      const data = {
+        "expert system": "as an ai researcher in college, i created a prolog expert system for environmental impact assessment...",
+        "crypto": "i am very active in the crypto field...",
+        "blockchain": "i co-founded blockchain zoo in 2017...",
+        "raspberry pi": "i worked to integrate the qwen llm onto hardware like raspberry pi zero...",
+        "privacy": "debio focuses on privacy-preserving data...",
+        "social media": "i launched myriad social as a decentralized, censorship-resistant platform...",
+        "metaverse": "i raised usd 500k to build realitychain...",
+        "ai poetry": "robotpuisi was my foray into creative ai...",
+        "library system": "this project holds a special place in my heart...",
+        "crypto companies": "over the years, i've founded and co-founded several crypto-related organizations...",
+        "indonesian blockchain association": "as a co-founder of the indonesian blockchain association...",
+        "ibm": "during my tenure at ibm, i served as the territory general manager...",
+        "transhumanism": "i consider myself a transhumanist...",
+        "blocksphere": "as a partner at blocksphere.id, i've led various blockchain initiatives...",
+        "kendi.io": "co-founding kendi.io allowed me to explore innovative blockchain apps...",
+        "decentralization": "i'm passionate about decentralization...",
+        "bioinformatics": "combining my interests in biology and technology...",
+        "public speaking": "i've shared my insights on blockchain and technology...",
+        "github": "on my github profile, i showcase a range of projects...",
+        "robotpuisi": "robotpuisi was an indonesian poetry bot i developed...",
+        "realitychain": "i founded realitychain.io, a metaverse infrastructure project...",
+        "myriad": "i launched myriad.social, a decentralized, censorship-resistant platform...",
+        "debio": "debio.network focuses on privacy-preserving data...",
+        "blockchain zoo": "i co-founded blockchain zoo...",
+        "nester.city": "i co-founded nester.city, focusing on decentralized urban development...",
+        "oct.network": "i'm involved with oct.network...",
+        "uniqueone.network": "i contribute to uniqueone.network...",
+        "trustpanda": "i developed trustpanda, a chatbot that automates blockchain record-keeping...",
+        "genomic data science": "i'm currently learning genomic data science...",
+        "environmental engineering": "i studied environmental engineering with a focus on microbiology...",
+        "prolog": "i have experience with programming languages like prolog...",
+        "python": "i'm proficient in python, utilizing it in various projects...",
+        "delphi": "i've worked with delphi/pascal/embarcadero...",
+        "javascript": "i use javascript in web development projects...",
+        "node-red": "i utilize node-red for low-code development...",
+        "mit app inventor": "i've explored mobile app development using mit app inventor 2...",
+        "kodular": "i've used kodular for low-code mobile app development...",
+        "libertarian": "politically, i identify as a libertarian...",
+        "economic conservative": "i hold economically conservative views...",
+        "social center-left": "socially, i lean center-left...",
+        "articles": "i've written and been featured in various articles...",
+        "decentri.city": "i run decentri.city, where i review decentralized tech...",
+        "qwen": "i've worked on integrating the qwen llm into edge devices...",
+        "bestee.ai": "bestee.ai is one of my chatbot projects...",
+        "unconnected.ai": "unconnected.ai is a project focusing on offline-first ai...",
+        "decentralized ai": "i advocate for decentralized ai systems...",
+        "zero-knowledge proofs": "i use zero-knowledge proofs in projects like debio.network..."
+      };
+
+      init();
+      animate();
+
+      function init() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x111111);
+
+        // place camera farther away so we can see more of the spread
+        camera = new THREE.PerspectiveCamera(
+          75,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        camera.position.z = 200;
+        camera.lookAt(0, 0, 0);
+
+        originalCamPos = camera.position.clone();
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        const light = new THREE.PointLight(0xffffff, 1);
+        light.position.set(50, 50, 50);
+        scene.add(light);
+
+        createPlanes();
+
+        renderer.domElement.addEventListener("pointerdown", onPointerDown);
+        window.addEventListener("resize", onWindowResize, false);
+      }
+
+      function createPlanes() {
+        // clear existing planes
+        planes.forEach((p) => scene.remove(p));
+        planes = [];
+
+        // let's define a bigger random region in x,y,z
+        // so they are scattered in front of the camera
+        // camera is at z=200, so let's put planes from z=50 to z=-50 (some behind origin, some in front)
+        const spreadX = 200; 
+        const spreadY = 150;
+        const spreadZ = 100;
+
+        // build a plane for each key
+        Object.keys(data).forEach((key) => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = 512;
+          canvas.height = 512;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // just the key initially
+          wrapText(ctx, key, 30, 50, 450, 32);
+
+          const texture = new THREE.CanvasTexture(canvas);
+          const geometry = new THREE.PlaneGeometry(80, 80);
+          const material = new THREE.MeshBasicMaterial({
+            map: texture,
+            side: THREE.DoubleSide,
+            transparent: true,
+            alphaTest: 0.01
+          });
+
+          const plane = new THREE.Mesh(geometry, material);
+
+          plane.userData = {
+            originalText: key,
+            fullText: key + ": " + data[key],
+            canvas,
+            texture
+          };
+
+          // random x,y,z within the spread
+          plane.position.x = THREE.MathUtils.randFloat(-spreadX, spreadX);
+          plane.position.y = THREE.MathUtils.randFloat(-spreadY, spreadY);
+          plane.position.z = THREE.MathUtils.randFloat(-spreadZ, spreadZ);
+
+          // random rotation around y
+          plane.rotation.y = Math.random() * 2 * Math.PI;
+
+          scene.add(plane);
+          planes.push(plane);
+        });
+      }
+
+      // helper to wrap text
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        ctx.fillStyle = "#0f0";
+        ctx.font = "26px monospace";
+        const words = text.split(" ");
+        let line = "";
+        for (let n = 0; n < words.length; n++) {
+          const testLine = line + words[n] + " ";
+          const metrics = ctx.measureText(testLine);
+          const testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+            ctx.fillText(line, x, y);
+            line = words[n] + " ";
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line, x, y);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function onPointerDown(event) {
+        // if a plane is focused, revert on any click
+        if (focusedPlane) {
+          moveCameraTo(originalCamPos, originalTarget, 1500, () => {
+            updatePlaneTexture(focusedPlane, focusedPlane.userData.originalText);
+            focusedPlane = null;
+            isSceneRotating = true;
+          });
+          return;
+        }
+
+        // map pointer coords
+        const rect = renderer.domElement.getBoundingClientRect();
+        pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(planes);
+
+        if (intersects.length > 0) {
+          focusedPlane = intersects[0].object;
+          isSceneRotating = false;
+
+          // show the full text
+          updatePlaneTexture(focusedPlane, focusedPlane.userData.fullText);
+
+          // plane world pos & normal
+          const planeWorldPos = new THREE.Vector3();
+          focusedPlane.getWorldPosition(planeWorldPos);
+
+          const planeWorldQuat = new THREE.Quaternion();
+          focusedPlane.getWorldQuaternion(planeWorldQuat);
+
+          const planeNormal = new THREE.Vector3(0, 0, 1).applyQuaternion(planeWorldQuat);
+
+          // place camera behind plane
+          const cameraOffset = 70;
+          const newCamPos = planeWorldPos.clone().addScaledVector(planeNormal, cameraOffset);
+
+          moveCameraTo(newCamPos, planeWorldPos, 1500);
+        }
+      }
+
+      function updatePlaneTexture(plane, text) {
+        const { canvas, texture } = plane.userData;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        wrapText(ctx, text, 30, 50, 450, 32);
+        texture.needsUpdate = true;
+      }
+
+      function moveCameraTo(targetPos, lookAtPos, duration = 1000, onComplete) {
+        const startPos = camera.position.clone();
+        const startQuat = camera.quaternion.clone();
+
+        // temporarily set camera
+        camera.position.copy(targetPos);
+        camera.lookAt(lookAtPos);
+        const endQuat = camera.quaternion.clone();
+
+        // revert
+        camera.position.copy(startPos);
+        camera.quaternion.copy(startQuat);
+
+        let startTime = null;
+        function animateCamera(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          camera.position.lerpVectors(startPos, targetPos, progress);
+          THREE.Quaternion.slerp(startQuat, endQuat, camera.quaternion, progress);
+
+          if (progress < 1) {
+            requestAnimationFrame(animateCamera);
+          } else {
+            if (onComplete) onComplete();
+          }
+        }
+        requestAnimationFrame(animateCamera);
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        // re-enable rotation so we can see the distribution
+        if (isSceneRotating) {
+          scene.rotation.y -= 0.003;
+        }
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
+</html>
